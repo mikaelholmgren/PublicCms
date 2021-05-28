@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PublicCms.Web.Services
 {
-    public class ContentService
+    public class ContentService : IContentService
     {
         private readonly IConfiguration _config;
         private readonly MongoService _ms;
@@ -18,7 +18,7 @@ namespace PublicCms.Web.Services
         {
             _config = config;
             _ms = ms;
-            _pageCollection = _ms.GetCollection<ContentPage>(_config["MongoDB:PageCollectionName"]);
+            _pageCollection = _ms.GetCollection<ContentPage>(_config["MongoDB:PagesCollectionName"]);
         }
         public async Task<ContentPage> GetPageByNameAsync(string name)
         {
@@ -28,13 +28,13 @@ namespace PublicCms.Web.Services
         {
             await _pageCollection.InsertOneAsync(p);
         }
-        public async Task SaveAsync(ContentPage p) 
+        public async Task SavePageAsync(ContentPage p) 
         {
             
             var filter = Builders<BsonDocument>.Filter.Eq("Id", p.Id);
             await _pageCollection.ReplaceOneAsync(f => p.Id == f.Id, p);
         }
-        public async Task<IEnumerable<ContentPage>> GetAllAsync()
+        public async Task<IEnumerable<ContentPage>> GetAllPagesAsync()
         {
             return await _pageCollection.Find(new BsonDocument()).ToListAsync();
         }

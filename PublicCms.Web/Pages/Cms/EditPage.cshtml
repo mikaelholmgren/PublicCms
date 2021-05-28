@@ -1,0 +1,82 @@
+﻿@page
+@using PublicCms.Web.Models.PageParts
+@model PublicCms.Web.Pages.Cms.EditPageModel
+@{
+    ViewData["Title"] = "Redigera sida";
+}
+
+<div class="text-center">
+    <h1>Skapa/redigera</h1>
+    <div>
+        <button class="btn btn-primary" data-toggle="collapse" data-target="#mainfrm" aria-controls="mainfrm" aria-expanded="false">
+            Redigera sidans namn och innehåll
+        </button>
+    </div>
+    <div class="collapse" id="mainfrm">
+        <form method="post" asp-page-handler="MainFrm">
+            <div class="form-group">
+                @Html.LabelFor(m => m.MainInput.Name)
+                @Html.EditorFor(m => m.MainInput.Name)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.MainInput.Heading)
+                @Html.EditorFor(m => m.MainInput.Heading)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.MainInput.TextContent)
+                @Html.EditorFor(m => m.MainInput.TextContent)
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save"></i><span class="ml-1">Spara</span></button>
+            </div>
+
+        </form>
+    </div>
+
+    @if (Model.CurrentPage != null)
+    {
+        <div>
+            <p>Sidans namn: @Model.CurrentPage.Name</p>
+            <h2>@Model.CurrentPage.Heading</h2>
+            <p>@Model.CurrentPage.TextContent</p>
+        </div>
+        if (Model.CurrentPage.Links.Count() > 0)
+        {
+            <h2>Länkar</h2>
+            <ul class="list-unstyled">
+                @foreach (var link in Model.CurrentPage.Links)
+                {
+                    <li>
+                        <a href="@link.Url">@link.DisplayText</a>
+                    </li>
+                }
+            </ul>
+        }
+    }
+    <div>
+        <button class="btn btn-primary" data-toggle="collapse" data-target="#newlinkfrm" aria-controls="newlinkfrm" aria-expanded="false">
+            Lägg till länk
+        </button>
+    </div>
+    <div class="collapse" id="newlinkfrm">
+        <form method="post" asp-page-handler="NewLinkFrm">
+            <div class="form-group">
+                @Html.LabelFor(m => m.NewLinkInput.Url)
+                @Html.EditorFor(m => m.NewLinkInput.Url)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.NewLinkInput.Text)
+                @Html.EditorFor(m => m.NewLinkInput.Text)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.NewLinkInput.NewWindow)
+                @Html.EditorFor(m => m.NewLinkInput.NewWindow)
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save"></i><span class="ml-1">Spara</span></button>
+            </div>
+
+        </form>
+    </div>
+
+</div>

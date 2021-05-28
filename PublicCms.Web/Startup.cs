@@ -29,6 +29,7 @@ namespace PublicCms.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<AdminService>();
+            services.AddScoped<IContentService, ContentService>();
             services.AddSingleton<MongoService>();
             services.AddDbContext<IdentityContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("IdentityConnection")));
@@ -42,6 +43,7 @@ namespace PublicCms.Web
                     policy => policy.RequireRole("Admin"));
             }
                 );
+            services.AddSession();
             services.AddRazorPages(options =>
             {
                 options.Conventions.AuthorizeFolder("/Cms", "AdminPolicy");
@@ -71,6 +73,7 @@ namespace PublicCms.Web
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
 
