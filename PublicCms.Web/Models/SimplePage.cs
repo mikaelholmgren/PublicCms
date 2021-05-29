@@ -11,6 +11,6 @@ namespace PublicCms.Web.Models
         public string Heading { get; set; }
         public string TextContent { get; set; }
         public List<LinkPart> Links { get; set; } = new();
-        public ImagePart Images { get; set; }
+        public ImagePart Image { get; set; }
     }
 }

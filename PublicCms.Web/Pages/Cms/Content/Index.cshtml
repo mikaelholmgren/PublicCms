@@ -1,0 +1,34 @@
+﻿@page
+@model PublicCms.Web.Pages.Cms.Content.IndexModel
+@{
+    ViewData["Title"] = "Innehåll";
+}
+<h1>ViewData["Title"]</h1>
+<div class="row">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Namn</th>
+                <th>URL</th>
+                <th>Sidtyp</th>
+                <th>Åtgärder</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pg in Model.Pages)
+            {
+                var url = pg.Slug != null ? $"/{pg.Slug}" : "";
+                var pgType = pg.GetType().Name;
+                var editUrl = $"../Editor/Pages/{pgType}/Edit";
+                <tr>
+                    <td>@pg.Name</td>
+                    <td>@url</td>
+                    <td>@pgType</td>
+                    <td>
+                        <a asp-page="@editUrl" asp-route-pageId="@pg.Id">Redigera</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

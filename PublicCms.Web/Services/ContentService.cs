@@ -39,5 +39,10 @@ namespace PublicCms.Web.Services
             return await _pageCollection.Find(new BsonDocument()).ToListAsync();
         }
 
+        public async Task<T> GetPageByIdAsync<T>(Guid pageId) where T : ContentPage
+        {
+            var collection = _ms.GetCollection<T>(_config["MongoDB:PagesCollectionName"]);
+            return await collection.Find(n => n.Id == pageId).FirstOrDefaultAsync();
+        }
     }
 }
