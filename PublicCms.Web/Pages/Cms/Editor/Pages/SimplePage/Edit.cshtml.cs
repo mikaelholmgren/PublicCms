@@ -17,9 +17,22 @@ namespace PublicCms.Web.Pages.Cms.Editor.Pages.SimplePage
             this._cs = cs;
         }
         public Models.SimplePage CurrentPage { get; set; }
+        [BindProperty]
+        public Models.InputModels.SimplePageInput MainInput { get; set; } = new();
         public async Task OnGetAsync(Guid pageId)
         {
             CurrentPage = await _cs.GetPageByIdAsync<Models.SimplePage>(pageId);
+            if (!string.IsNullOrEmpty(CurrentPage.TextContent)) MainInput.TextContent = CurrentPage.TextContent;
+        }
+        public async Task<IActionResult> OnPostMainFrmAsync(Guid pageId)
+        {
+            CurrentPage = await _cs.GetPageByIdAsync<Models.SimplePage>(pageId);
+            CurrentPage.Name = MainInput.Name;
+            CurrentPage.Slug = MainInput.Name.ToLower().Replace(" ", "-");
+            CurrentPage.Heading = MainInput.Heading;
+            CurrentPage.TextContent = MainInput.TextContent;
+            await _cs.SavePageAsync(CurrentPage);
+            return RedirectToPage("./edit", new { pageId = pageId });
         }
     }
 }

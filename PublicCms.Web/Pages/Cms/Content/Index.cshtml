@@ -3,8 +3,11 @@
 @{
     ViewData["Title"] = "Innehåll";
 }
-<h1>ViewData["Title"]</h1>
+<h1>@ViewData["Title"]</h1>
 <div class="row">
+    <div id="createlinks">
+        <a asp-page="/cms/editor/pages/simplepage/create">Skapa enkel sida</a>
+    </div>
     <table class="table">
         <thead>
             <tr>

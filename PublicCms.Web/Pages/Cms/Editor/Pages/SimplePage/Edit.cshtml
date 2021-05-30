@@ -1,6 +1,44 @@
 ﻿@page
 @model PublicCms.Web.Pages.Cms.Editor.Pages.SimplePage.EditModel
 @{
-    ViewData["Title"] = $"Redigera {Model.CurrentPage.Name}";
+    ViewData["Title"] = "Redigera sida";
 }
 <h1>@ViewData["Title"]</h1>
+<h2>@Model.CurrentPage.Name</h2>
+<form method="post" asp-page-handler="MainFrm">
+
+    <div class="row">
+        <div>
+            <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#mainfrm" aria-controls="mainfrm" aria-expanded="false">
+                Redigera sidans namn och URL
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="collapse" id="mainfrm">
+            <input type="hidden" name="pageId" value="@Model.CurrentPage.Id" />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MainInput.Name"></label>
+                <input asp-for="MainInput.Name" value="@Model.CurrentPage.Name" class="form-control" />
+                <span asp-validation-for="MainInput.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <p>Sidans Url kommer att uppdateras om du ändrar namnet</p>
+            </div>
+            <div class="form-group">
+                <label asp-for="MainInput.Heading"></label>
+                <input asp-for="MainInput.Heading" value="@Model.CurrentPage.Heading" class="form-control" />
+                <span asp-validation-for="MainInput.Heading" class="text-danger"></span>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label asp-for="MainInput.TextContent"></label>
+            <textarea asp-for="MainInput.TextContent" rows="4" cols="50" class="form-control"></textarea>
+            <span asp-validation-for="MainInput.TextContent" class="text-danger"></span>
+        </div>
+
+    </div>
+    <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save"></i><span class="ml-1">Spara</span></button>
+</form>
