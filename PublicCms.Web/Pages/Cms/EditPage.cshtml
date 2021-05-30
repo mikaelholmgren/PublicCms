@@ -15,13 +15,13 @@
     <div class="collapse" id="mainfrm">
         <form method="post" asp-page-handler="MainFrm">
             <div class="form-group">
-                @Html.LabelFor(m => m.MainInput.Name)
-                @Html.EditorFor(m => m.MainInput.Name)
+                @Html.LabelFor(m => m.MainInput.Title)
+                @Html.EditorFor(m => m.MainInput.Title)
             </div>
-            <div class="form-group">
+            @*<div class="form-group">
                 @Html.LabelFor(m => m.MainInput.Heading)
                 @Html.EditorFor(m => m.MainInput.Heading)
-            </div>
+            </div>*@
             <div class="form-group">
                 @Html.LabelFor(m => m.MainInput.TextContent)
                 @Html.EditorFor(m => m.MainInput.TextContent)

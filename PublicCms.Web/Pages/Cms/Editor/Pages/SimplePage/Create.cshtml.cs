@@ -27,8 +27,8 @@ namespace PublicCms.Web.Pages.Cms.Editor.Pages.SimplePage
             if (!ModelState.IsValid) return Page();
             Models.SimplePage page = new()
             {
-                Name = Input.Name,
-                Slug = Input.Name.ToLower().Replace(" ", "-")
+                Name = Input.Title,
+                Slug = Input.Title.ToLower().Replace(" ", "-")
             };
 
             _cs.AddPage(page);

@@ -38,19 +38,19 @@ namespace PublicCms.Web.Pages.Cms
         {
             MainInput = new()
             {
-                Name = CurrentPage.Name,
-                Heading = CurrentPage.Heading,
+                Title = CurrentPage.Name,
+                SubHeading = CurrentPage.Heading,
                 TextContent = CurrentPage.TextContent
             };
         }
 
         public async Task<IActionResult> OnPostMainFrmAsync()
         {
-            if (MainInput.Name == null) return Page();
+            if (MainInput.Title == null) return Page();
             SimplePage page = new()
             {
-                Name = MainInput.Name,
-                Heading = MainInput.Heading,
+                Name = MainInput.Title,
+                Heading = MainInput.SubHeading,
                 TextContent = MainInput.TextContent
             };
             HttpContext.Session.SavePageToSession(page);
