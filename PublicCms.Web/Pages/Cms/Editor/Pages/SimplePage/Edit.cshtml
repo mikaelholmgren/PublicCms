@@ -14,29 +14,42 @@
             </button>
         </div>
     </div>
-        <div class="collapse" id="mainfrm">
-            <input type="hidden" name="pageId" value="@Model.CurrentPage.Id" />
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="MainInput.Title"></label>
-                <input asp-for="MainInput.Title" value="@Model.CurrentPage.Name" class="form-control" />
-                <span asp-validation-for="MainInput.Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <p>Sidans Url kommer att uppdateras om du ändrar namnet</p>
-            </div>
-            @*<div class="form-group">
+    <div class="collapse" id="mainfrm">
+        <input type="hidden" name="pageId" value="@Model.CurrentPage.Id" />
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="MainInput.Title"></label>
+            <input asp-for="MainInput.Title" value="@Model.CurrentPage.Name" class="form-control" />
+            <span asp-validation-for="MainInput.Title" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <p>Sidans Url kommer att uppdateras om du ändrar namnet</p>
+        </div>
+        @*<div class="form-group">
                 <label asp-for="MainInput.Heading"></label>
                 <input asp-for="MainInput.Heading" value="@Model.CurrentPage.Heading" class="form-control" />
                 <span asp-validation-for="MainInput.Heading" class="text-danger"></span>
             </div>*@
 
-        </div>
-        <div class="form-group">
-            <label asp-for="MainInput.TextContent"></label>
-            <textarea asp-for="MainInput.TextContent" rows="4" cols="50" class="form-control"></textarea>
-            <span asp-validation-for="MainInput.TextContent" class="text-danger"></span>
-        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="MainInput.TextContent"></label>
+        <textarea asp-for="MainInput.TextContent" rows="4" cols="50" class="form-control"></textarea>
+        <span asp-validation-for="MainInput.TextContent" class="text-danger"></span>
+    </div>
 
     <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save"></i><span class="ml-1">Spara</span></button>
 </form>
+@if (Model.CurrentPage.Links.Count() > 0)
+{
+    <h2>Länkar</h2>
+    <ul class="list-unstyled">
+        @foreach (var link in Model.CurrentPage.Links)
+        {
+            <li>
+                <a asp-page="/cms/editor/parts/linkpart/edit" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-EditIndex="@link.DisplayOrder">@link.DisplayText</a>
+            </li>
+        }
+    </ul>
+}
+<p><a asp-page="/cms/editor/parts/linkpart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path">Lägg till länk</a></p>

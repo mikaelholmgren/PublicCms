@@ -18,8 +18,4 @@
     <PackageReference Include="mongodb.driver" Version="2.12.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Pages\Cms\Editor\Parts\" />
-  </ItemGroup>
-
 </Project>

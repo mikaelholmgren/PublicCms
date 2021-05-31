@@ -1,0 +1,25 @@
+﻿@page
+@model PublicCms.Web.Pages.Cms.Editor.Parts.LinkPart.CreateModel
+@{
+    ViewData["Title"] = "Skapa länk";
+}
+<h1>@ViewData["Title"]</h1>
+<div class="row">
+    <form method="post">
+        <input type="hidden" asp-for="PageId" />
+        <input type="hidden" asp-for="ReturnUrl" />
+        <div class="form-group">
+            <label asp-for="Input.Url"></label>
+            <input asp-for="Input.Url" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.Text"></label>
+            <input asp-for="Input.Text" class="form-control" />
+        </div>
+        <div class="form-group">
+            <input asp-for="Input.NewWindow" />
+            <label asp-for="Input.NewWindow"></label>
+        </div>
+        <button class="btn btn-primary" type="submit">Skapa</button>
+    </form>
+</div>

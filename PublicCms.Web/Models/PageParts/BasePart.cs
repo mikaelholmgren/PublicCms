@@ -2,5 +2,6 @@
 {
     public class BasePart
     {
+        public int DisplayOrder { get; set; }
     }
 }
