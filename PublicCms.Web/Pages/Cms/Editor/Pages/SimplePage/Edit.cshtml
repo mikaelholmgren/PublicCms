@@ -51,10 +51,19 @@
                     <a asp-page="/cms/editor/parts/linkpart/edit" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-EditIndex="@link.DisplayOrder">@link.DisplayText</a>
                 </span>
                 <span>
-                    <a asp-route-pageId="@Model.PageId" asp-route-orderNumber="@link.DisplayOrder"asp-page-handler="RemoveLink">Ta bort</a>
+                    <a asp-route-pageId="@Model.PageId" asp-route-orderNumber="@link.DisplayOrder" asp-page-handler="RemoveLink">Ta bort</a>
                 </span>
             </li>
         }
     </ul>
 }
 <p><a asp-page="/cms/editor/parts/linkpart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path">Lägg till länk</a></p>
+@if (Model.CurrentPage.Image == null)
+{
+    <p><a asp-page="/cms/editor/parts/imagepart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path">Lägg till bild</a></p>
+}
+else
+{
+    <p><img src="/@Model.CurrentPage.Image.Src" alt="@Model.CurrentPage.Image.AltText" width="@Model.CurrentPage.Image.Width" /></p>
+    <p><a asp-page-handler="RemoveImage" asp-route-pageId="@Model.PageId">Ta bort bild</a></p>
+}

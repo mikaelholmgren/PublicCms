@@ -1,0 +1,29 @@
+﻿@page
+@model PublicCms.Web.Pages.Cms.Editor.Parts.ImagePart.CreateModel
+@{
+    ViewData["Title"] = "Ladda upp bild";
+}
+<h1>@ViewData["Title"]</h1>
+<div class="row">
+    <form method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="PageId" />
+        <input type="hidden" asp-for="ReturnUrl" />
+        <div class="form-group">
+            <label asp-for="Input.Src" class="control-label"></label>
+            <input asp-for="UploadedFile" type="file" class="form-control-file" />
+            <span asp-validation-for="Input.Src" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.AltText" class="control-label"></label>
+            <input asp-for="Input.AltText" class="form-control" />
+            <span asp-validation-for="Input.AltText" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.Width" class="control-label"></label>
+            <input asp-for="Input.Width" class="form-control" />
+            <span asp-validation-for="Input.Width" class="text-danger"></span>
+        </div>
+
+        <input type="submit" value="Ladda upp" />
+    </form>
+</div>

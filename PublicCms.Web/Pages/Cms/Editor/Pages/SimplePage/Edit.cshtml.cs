@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -44,5 +45,15 @@ namespace PublicCms.Web.Pages.Cms.Editor.Pages.SimplePage
             await _cs.SavePageAsync(CurrentPage);
             return RedirectToPage("./edit", new { pageId = PageId });
         }
+        public async Task<IActionResult> OnGetRemoveImageAsync()
+        {
+            CurrentPage = await _cs.GetPageByIdAsync<Models.SimplePage>(PageId);
+            var fileToRemove =$"./wwwroot/{CurrentPage.Image.Src}";
+            System.IO.File.Delete(fileToRemove);
+            CurrentPage.Image = null;
+            await _cs.SavePageAsync(CurrentPage);
+            return RedirectToPage("./edit", new { pageId = PageId });
+        }
+
     }
 }
