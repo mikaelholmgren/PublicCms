@@ -1,4 +1,5 @@
-﻿using PublicCms.Web.Models.PageParts;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using PublicCms.Web.Models.PageParts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,10 @@ namespace PublicCms.Web.Models
 {
     public class SimplePage : ContentPage
     {
+        public SimplePage()
+        {
+            DisplayComponent = typeof(Components.SimplePage);
+        }
         public string Heading { get; set; }
         public string TextContent { get; set; }
         public List<LinkPart> Links { get; set; } = new();

@@ -15,5 +15,8 @@ namespace PublicCms.Web.Models
         public string Name { get; set; }
         public string Slug { get; set; }
         public bool IsStartPage { get; set; }
+        [BsonIgnore]
+        public Type DisplayComponent { get; set; }
+
     }
 }

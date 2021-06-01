@@ -31,7 +31,7 @@ namespace PublicCms.Web.Pages.Cms.Editor.Pages.SimplePage
                 Slug = Input.Title.ToLower().Replace(" ", "-")
             };
 
-            _cs.AddPage(page);
+            await _cs.AddPage(page);
             return RedirectToPage("./Edit", new { pageId = page.Id });
         }
     }

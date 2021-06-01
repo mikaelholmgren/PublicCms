@@ -7,7 +7,7 @@ namespace PublicCms.Web.Services
 {
     public interface IContentService
     {
-        Task<ContentPage> GetPageByNameAsync(string name);
+        Task<ContentPage> GetPageBySlugAsync(string slug);
         Task AddPage(ContentPage p);
         Task SavePageAsync(ContentPage p);
         Task<IEnumerable<ContentPage>> GetAllPagesAsync();

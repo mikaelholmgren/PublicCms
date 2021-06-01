@@ -20,9 +20,9 @@ namespace PublicCms.Web.Services
             _ms = ms;
             _pageCollection = _ms.GetCollection<ContentPage>(_config["MongoDB:PagesCollectionName"]);
         }
-        public async Task<ContentPage> GetPageByNameAsync(string name)
+        public async Task<ContentPage> GetPageBySlugAsync(string slug)
         {
-            return await _pageCollection.Find(n => n.Name == name).FirstOrDefaultAsync();
+            return await _pageCollection.Find(n => n.Slug == slug).FirstOrDefaultAsync();
         }
         public async Task AddPage(ContentPage p)
         {
