@@ -19,20 +19,30 @@ namespace PublicCms.Web.Pages.Cms.Editor.Pages.SimplePage
         public Models.SimplePage CurrentPage { get; set; }
         [BindProperty]
         public Models.InputModels.SimplePageInput MainInput { get; set; } = new();
-        public async Task OnGetAsync(Guid pageId)
+        [BindProperty(SupportsGet = true)]
+        public Guid PageId { get; set; }
+        public async Task OnGetAsync()
         {
-            CurrentPage = await _cs.GetPageByIdAsync<Models.SimplePage>(pageId);
+            CurrentPage = await _cs.GetPageByIdAsync<Models.SimplePage>(PageId);
             if (!string.IsNullOrEmpty(CurrentPage.TextContent)) MainInput.TextContent = CurrentPage.TextContent;
         }
-        public async Task<IActionResult> OnPostMainFrmAsync(Guid pageId)
+        public async Task<IActionResult> OnPostMainFrmAsync()
         {
-            CurrentPage = await _cs.GetPageByIdAsync<Models.SimplePage>(pageId);
+            CurrentPage = await _cs.GetPageByIdAsync<Models.SimplePage>(PageId);
             CurrentPage.Name = MainInput.Title;
             CurrentPage.Slug = MainInput.Title.ToLower().Replace(" ", "-");
             CurrentPage.Heading = MainInput.SubHeading;
             CurrentPage.TextContent = MainInput.TextContent;
             await _cs.SavePageAsync(CurrentPage);
-            return RedirectToPage("./edit", new { pageId = pageId });
+            return RedirectToPage("./edit", new { pageId = PageId });
+        }
+        public async Task<IActionResult> OnGetRemoveLinkAsync(int orderNumber)
+        {
+            CurrentPage = await _cs.GetPageByIdAsync<Models.SimplePage>(PageId);
+            var linkToRemove = CurrentPage.Links.FirstOrDefault(l => l.DisplayOrder == orderNumber);
+            CurrentPage.Links.Remove(linkToRemove);
+            await _cs.SavePageAsync(CurrentPage);
+            return RedirectToPage("./edit", new { pageId = PageId });
         }
     }
 }

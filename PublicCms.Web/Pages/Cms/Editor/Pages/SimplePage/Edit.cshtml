@@ -47,7 +47,12 @@
         @foreach (var link in Model.CurrentPage.Links)
         {
             <li>
-                <a asp-page="/cms/editor/parts/linkpart/edit" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-EditIndex="@link.DisplayOrder">@link.DisplayText</a>
+                <span>
+                    <a asp-page="/cms/editor/parts/linkpart/edit" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-EditIndex="@link.DisplayOrder">@link.DisplayText</a>
+                </span>
+                <span>
+                    <a asp-route-pageId="@Model.PageId" asp-route-orderNumber="@link.DisplayOrder"asp-page-handler="RemoveLink">Ta bort</a>
+                </span>
             </li>
         }
     </ul>
