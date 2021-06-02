@@ -1,0 +1,19 @@
+﻿@page
+@model PublicCms.Web.Pages.Cms.Editor.Parts.TextPart.CreateModel
+@{
+    ViewData["Title"] = "Skapa textblock";
+}
+<div class="row">
+    <form method="post">
+        <input type="hidden" asp-for="PageId" />
+        <input type="hidden" asp-for="ReturnUrl" />
+        <div class="form-group">
+            <label asp-for="TextContent"></label>
+            <textarea asp-for="TextContent" rows="4" cols="50" class="form-control"></textarea>
+            <span asp-validation-for="TextContent" class="text-danger"></span>
+        </div>
+
+
+        <button class="btn btn-primary" type="submit">Skapa</button>
+    </form>
+</div>

@@ -54,7 +54,9 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.ImagePart
                     AltText = Input.AltText,
                     Width = Input.Width
                 };
-                sp.Image = part;
+                var maxIndex = sp.Parts.Max(m => m.DisplayOrder);
+                part.DisplayOrder = maxIndex + 1;
+                sp.Parts.Add(part);
                 await _cs.SavePageAsync(sp);
             }
             return RedirectToPage(ReturnUrl, new { pageId = PageId });

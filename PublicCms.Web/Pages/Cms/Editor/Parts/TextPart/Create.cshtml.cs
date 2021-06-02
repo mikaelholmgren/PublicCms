@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PublicCms.Web.Models;
-using PublicCms.Web.Models.InputModels;
 using PublicCms.Web.Services;
 
-namespace PublicCms.Web.Pages.Cms.Editor.Parts.LinkPart
+namespace PublicCms.Web.Pages.Cms.Editor.Parts.TextPart
 {
     public class CreateModel : PageModel
     {
@@ -19,7 +18,7 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.LinkPart
             this._cs = cs;
         }
         [BindProperty]
-        public LinkInput Input { get; set; } = new();
+        public string TextContent { get; set; }
         [BindProperty(SupportsGet = true)]
         public Guid PageId { get; set; }
         [BindProperty(SupportsGet = true)]
@@ -38,17 +37,16 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.LinkPart
                 if (sp.Parts.Count == 0) displayOrder++;
                 else
                     displayOrder = sp.Parts.Max(m => m.DisplayOrder) + 1;
-                Models.PageParts.LinkPart lp = new()
+                Models.PageParts.TextPart tp = new()
                 {
-                    Url = Input.Url,
-                    DisplayText = Input.Text,
-                    DisplayOrder = displayOrder
-
+                    DisplayOrder = displayOrder,
+                    TextContent = TextContent
                 };
-                sp.Parts.Add(lp);
+                sp.Parts.Add(tp);
                 await _cs.SavePageAsync(sp);
             }
             return RedirectToPage(ReturnUrl, new { pageId = PageId });
         }
+
     }
 }

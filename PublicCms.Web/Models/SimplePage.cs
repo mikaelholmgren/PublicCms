@@ -13,6 +13,7 @@ namespace PublicCms.Web.Models
         {
             DisplayComponent = typeof(Components.SimplePage);
         }
+        public List<BasePart> Parts { get; set; } = new();
         public string Heading { get; set; }
         public string TextContent { get; set; }
         public List<LinkPart> Links { get; set; } = new();

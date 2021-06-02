@@ -1,21 +1,29 @@
-﻿@if (CurrentPageModel.Image != null)
-            {
-    <div>
-        <img src="@CurrentPageModel.Image.Src" alt="@CurrentPageModel.Image.AltText" width="@CurrentPageModel.Image.Width" />
-    </div>
-            }
-<p>@CurrentPageModel.TextContent</p>
-@if (CurrentPageModel.Links.Count() >0)
-            {
-<h2>Länkar</h2>
-<ul class="list-unstyled">
-    @foreach (var link in CurrentPageModel.Links.OrderBy(o => o.DisplayOrder))
+﻿
+@if (CurrentPageModel.Parts.Count() > 0)
+{
+    @foreach (var part in CurrentPageModel.Parts.OrderBy(o => o.DisplayOrder))
     {
-        <li><a href="@link.Url">@link.DisplayText</a></li>
+        if (part is Models.PageParts.LinkPart)
+        {
+            var link = (Models.PageParts.LinkPart)part;
+            <p><a href="@link.Url">@link.DisplayText</a></p>
+        }
+        if (part is Models.PageParts.ImagePart)
+        {
+            var img = (Models.PageParts.ImagePart)part;
+            <div>
+                <img src="@img.Src" alt="@img.AltText" width="@img.Width" />
+            </div>
+
+        }
+        if (part is Models.PageParts.TextPart)
+        {
+            var txt = (Models.PageParts.TextPart)part;
+            <p>@txt.TextContent</p>
+        }
     }
-</ul>
-            }
+}
 @code {
-[Parameter]
+    [Parameter]
     public Models.SimplePage CurrentPageModel { get; set; }
 }

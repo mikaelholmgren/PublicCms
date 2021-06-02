@@ -4,11 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using PublicCms.Web.Models;
-using PublicCms.Web.Models.InputModels;
 using PublicCms.Web.Services;
-
-namespace PublicCms.Web.Pages.Cms.Editor.Parts.LinkPart
+using PublicCms.Web.Models;
+namespace PublicCms.Web.Pages.Cms.Editor.Parts.TextPart
 {
     public class EditModel : PageModel
     {
@@ -19,24 +17,22 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.LinkPart
             this._cs = cs;
         }
         [BindProperty]
-        public LinkInput Input { get; set; } = new();
+        public string TextContent { get; set; }
         [BindProperty(SupportsGet = true)]
         public Guid PageId { get; set; }
         [BindProperty(SupportsGet = true)]
         public string ReturnUrl { get; set; }
         [BindProperty(SupportsGet = true)]
         public int EditIndex { get; set; }
+
         public async Task OnGetAsync()
         {
             var page = await _cs.GetPageByIdAsync<ContentPage>(PageId);
             if (page is SimplePage)
             {
                 SimplePage sp = (SimplePage)page;
-                Models.PageParts.LinkPart lnk =(Models.PageParts.LinkPart) sp.Parts.FirstOrDefault(l => l.DisplayOrder == EditIndex);
-                Input.Url = lnk.Url;
-                Input.Text = lnk.DisplayText;
-                Input.NewWindow = lnk.OpenInNewWindow;
-                
+                var txt = (Models.PageParts.TextPart)sp.Parts.FirstOrDefault(l => l.DisplayOrder == EditIndex);
+                TextContent = txt.TextContent;
             }
 
         }
@@ -45,12 +41,10 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.LinkPart
             var page = await _cs.GetPageByIdAsync<ContentPage>(PageId);
             if (page is SimplePage)
             {
+                int displayOrder = 0;
                 SimplePage sp = (SimplePage)page;
-                Models.PageParts.LinkPart lnk =(Models.PageParts.LinkPart) sp.Parts.FirstOrDefault(l => l.DisplayOrder == EditIndex);
-                lnk.Url = Input.Url;
-                lnk.DisplayText = Input.Text;
-                lnk.OpenInNewWindow = Input.NewWindow;
-
+                var txt =(Models.PageParts.TextPart) sp.Parts.FirstOrDefault(t => t.DisplayOrder == EditIndex);
+                txt.TextContent = TextContent;
                 await _cs.SavePageAsync(sp);
             }
             return RedirectToPage(ReturnUrl, new { pageId = PageId });

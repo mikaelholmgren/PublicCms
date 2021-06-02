@@ -32,25 +32,24 @@ namespace PublicCms.Web.Pages.Cms.Editor.Pages.SimplePage
             CurrentPage = await _cs.GetPageByIdAsync<Models.SimplePage>(PageId);
             CurrentPage.Name = MainInput.Title;
             CurrentPage.Slug = MainInput.Title.ToLower().Replace(" ", "-");
-            CurrentPage.Heading = MainInput.SubHeading;
-            CurrentPage.TextContent = MainInput.TextContent;
             await _cs.SavePageAsync(CurrentPage);
             return RedirectToPage("./edit", new { pageId = PageId });
         }
-        public async Task<IActionResult> OnGetRemoveLinkAsync(int orderNumber)
+        public async Task<IActionResult> OnGetRemoveAsync(int orderNumber)
         {
             CurrentPage = await _cs.GetPageByIdAsync<Models.SimplePage>(PageId);
-            var linkToRemove = CurrentPage.Links.FirstOrDefault(l => l.DisplayOrder == orderNumber);
-            CurrentPage.Links.Remove(linkToRemove);
+            var partToRemove = CurrentPage.Parts.FirstOrDefault(l => l.DisplayOrder == orderNumber);
+            CurrentPage.Parts.Remove(partToRemove);
             await _cs.SavePageAsync(CurrentPage);
             return RedirectToPage("./edit", new { pageId = PageId });
         }
-        public async Task<IActionResult> OnGetRemoveImageAsync()
+        public async Task<IActionResult> OnGetRemoveImageAsync(int orderNumber)
         {
             CurrentPage = await _cs.GetPageByIdAsync<Models.SimplePage>(PageId);
-            var fileToRemove =$"./wwwroot/{CurrentPage.Image.Src}";
+            var imageToRemove =(Models.PageParts.ImagePart) CurrentPage.Parts.FirstOrDefault(l => l.DisplayOrder == orderNumber);
+            var fileToRemove =$"./wwwroot/{imageToRemove.Src}";
             System.IO.File.Delete(fileToRemove);
-            CurrentPage.Image = null;
+            CurrentPage.Parts.Remove(imageToRemove);
             await _cs.SavePageAsync(CurrentPage);
             return RedirectToPage("./edit", new { pageId = PageId });
         }
