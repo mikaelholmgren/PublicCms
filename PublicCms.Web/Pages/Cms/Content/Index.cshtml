@@ -23,12 +23,25 @@
                 var url = pg.Slug != null ? $"/{pg.Slug}" : "";
                 var pgType = pg.GetType().Name;
                 var editUrl = $"../Editor/Pages/{pgType}/Edit";
+                var startPageText = pg.IsStartPage ? "Är startsida" : "Gör till startsida";
                 <tr>
                     <td>@pg.Name</td>
                     <td>@url</td>
                     <td>@pgType</td>
                     <td>
-                        <a asp-page="@editUrl" asp-route-pageId="@pg.Id">Redigera</a>
+                        <span>
+                            <a asp-page="@editUrl" asp-route-pageId="@pg.Id">Redigera</a>
+                        </span>
+                        <span>
+                            @if (pg.IsStartPage)
+                            {
+                                @startPageText
+                            }
+                            else
+                            {
+                                <a asp-page-handler="SetAsStartPage" asp-route-pageId="@pg.Id">@startPageText</a>
+                            }
+                        </span>
                     </td>
                 </tr>
             }

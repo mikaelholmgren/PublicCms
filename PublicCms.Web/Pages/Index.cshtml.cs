@@ -24,7 +24,14 @@ namespace PublicCms.Web.Pages
 
         public async Task<IActionResult> OnGetAsync()
         {
-            if (Slug == null) CurrentPage = await _cs.GetPageBySlugAsync("hem");
+            if (Slug == null)
+            {
+                var startPage = await _cs.GetStartPageAsync();
+                if (startPage == null)
+                    CurrentPage = new SimplePage() { Name = "Ingen startsida", TextContent = "Ställ in en startsida för sajten i admin!" };
+                else
+                    CurrentPage = startPage;
+            }
             else
             CurrentPage = await _cs.GetPageBySlugAsync(Slug);
             if (CurrentPage == null) return NotFound();

@@ -8,6 +8,8 @@ namespace PublicCms.Web.Services
     public interface IContentService
     {
         Task<ContentPage> GetPageBySlugAsync(string slug);
+        Task<ContentPage> GetStartPageAsync();
+        Task SetStartPageAsync(Guid pageId);
         Task AddPage(ContentPage p);
         Task SavePageAsync(ContentPage p);
         Task<IEnumerable<ContentPage>> GetAllPagesAsync();

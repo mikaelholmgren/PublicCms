@@ -22,5 +22,10 @@ namespace PublicCms.Web.Pages.Cms.Content
         {
             Pages = await _cs.GetAllPagesAsync();
         }
+        public async Task<IActionResult> OnGetSetAsStartPageAsync(Guid pageId)
+        {
+            await _cs.SetStartPageAsync(pageId);
+            return RedirectToPage("./Index");
+        }
     }
 }

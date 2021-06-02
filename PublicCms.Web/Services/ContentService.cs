@@ -24,6 +24,11 @@ namespace PublicCms.Web.Services
         {
             return await _pageCollection.Find(n => n.Slug == slug).FirstOrDefaultAsync();
         }
+        public async Task<ContentPage> GetStartPageAsync()
+        {
+            return await _pageCollection.Find(n => n.IsStartPage == true).FirstOrDefaultAsync();
+        }
+
         public async Task AddPage(ContentPage p)
         {
             await _pageCollection.InsertOneAsync(p);
@@ -43,6 +48,26 @@ namespace PublicCms.Web.Services
         {
             var collection = _ms.GetCollection<T>(_config["MongoDB:PagesCollectionName"]);
             return await collection.Find(n => n.Id == pageId).FirstOrDefaultAsync();
+        }
+
+        public async Task SetStartPageAsync(Guid pageId)
+        {
+            var currentStartPage = await GetStartPageAsync();
+            var newStartPage = await GetPageByIdAsync<ContentPage>(pageId);
+
+            if (currentStartPage == null)
+            {
+                newStartPage.IsStartPage = true;
+                await SavePageAsync(newStartPage);
+                return;
+            }
+
+            if (pageId == currentStartPage.Id) return;
+            currentStartPage.IsStartPage = false;
+            await SavePageAsync(currentStartPage);
+            newStartPage.IsStartPage = true;
+            await SavePageAsync(newStartPage);
+
         }
     }
 }
