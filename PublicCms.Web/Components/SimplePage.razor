@@ -1,5 +1,20 @@
-﻿<p>@CurrentPageModel.TextContent</p>
-
+﻿@if (CurrentPageModel.Image != null)
+            {
+    <div>
+        <img src="@CurrentPageModel.Image.Src" alt="@CurrentPageModel.Image.AltText" width="@CurrentPageModel.Image.Width" />
+    </div>
+            }
+<p>@CurrentPageModel.TextContent</p>
+@if (CurrentPageModel.Links.Count() >0)
+            {
+<h2>Länkar</h2>
+<ul class="list-unstyled">
+    @foreach (var link in CurrentPageModel.Links.OrderBy(o => o.DisplayOrder))
+    {
+        <li><a href="@link.Url">@link.DisplayText</a></li>
+    }
+</ul>
+            }
 @code {
 [Parameter]
     public Models.SimplePage CurrentPageModel { get; set; }
