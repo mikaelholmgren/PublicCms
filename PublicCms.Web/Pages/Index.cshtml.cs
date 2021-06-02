@@ -22,11 +22,13 @@ namespace PublicCms.Web.Pages
         public string Slug { get; set; }
         public ContentPage CurrentPage { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             if (Slug == null) CurrentPage = await _cs.GetPageBySlugAsync("hem");
             else
             CurrentPage = await _cs.GetPageBySlugAsync(Slug);
+            if (CurrentPage == null) return NotFound();
+            return Page();
         }
     }
 }
