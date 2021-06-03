@@ -1,4 +1,5 @@
 ﻿@page
+@using PublicCms.Web.Extensions
 @model PublicCms.Web.Pages.Cms.Editor.Pages.SimplePage.EditModel
 @{
     ViewData["Title"] = "Redigera sida";
@@ -36,31 +37,37 @@
     {
         var partType = part.GetType().Name;
         var editPage = $"/cms/editor/parts/{partType}/edit";
-        <div>
-            @if (part is Models.PageParts.TextPart)
-            {
-                var txt = (Models.PageParts.TextPart)part;
-                <p>@txt.TextContent</p>
-            }
-            <span>
-                <a asp-page="@editPage" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-EditIndex="@part.DisplayOrder">@partType</a>
-            </span>
-            @if (part is Models.PageParts.ImagePart)
-            {
-                var img = (Models.PageParts.ImagePart)part;
-                <p>
-                    <span><img src="/@img.Src" alt="@img.AltText" width="@img.Width" /></span>
-                    <span><a asp-page-handler="RemoveImage" asp-route-pageId="@Model.PageId" asp-route-orderNumber="@part.DisplayOrder">Ta bort bild</a></span>
+<div>
+    @if (part is Models.PageParts.TextPart)
+    {
+        var txt = (Models.PageParts.TextPart)part;
+        <p>@Html.Raw(txt.TextContent.Displayify())</p>
+    }
+    @if (part is Models.PageParts.LinkPart)
+    {
+        var lnk = (Models.PageParts.LinkPart)part;
+        <p>@lnk.DisplayText</p>
+    }
 
-                </p>
-            }
-            else
-            {
-            <span>
-                <a asp-route-pageId="@Model.PageId" asp-route-orderNumber="@part.DisplayOrder" asp-page-handler="RemovePart">Ta bort</a>
-            </span>
-            }
-        </div>
+    <span>
+        <a asp-page="@editPage" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-EditIndex="@part.DisplayOrder">Redigera @part.DisplayName</a>
+    </span>
+    @if (part is Models.PageParts.ImagePart)
+    {
+        var img = (Models.PageParts.ImagePart)part;
+        <p>
+            <span><img src="/@img.Src" alt="@img.AltText" width="@img.Width" /></span>
+            <span><a asp-page-handler="RemoveImage" asp-route-pageId="@Model.PageId" asp-route-orderNumber="@part.DisplayOrder">Ta bort bild</a></span>
+
+        </p>
+    }
+    else
+    {
+        <span>
+            <a asp-route-pageId="@Model.PageId" asp-route-orderNumber="@part.DisplayOrder" asp-page-handler="RemovePart">Ta bort @part.DisplayName</a>
+        </span>
+    }
+</div>
     }
 }
 <p><a asp-page="/cms/editor/parts/textpart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path">Lägg till textblock</a></p>

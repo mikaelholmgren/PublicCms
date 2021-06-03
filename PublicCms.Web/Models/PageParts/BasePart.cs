@@ -6,5 +6,7 @@ namespace PublicCms.Web.Models.PageParts
     public class BasePart
     {
         public int DisplayOrder { get; set; }
+        [BsonIgnore]
+        public string DisplayName { get; set; }
     }
 }

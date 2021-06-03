@@ -1,4 +1,4 @@
-﻿
+﻿@using PublicCms.Web.Extensions
 @if (CurrentPageModel.Parts.Count() > 0)
 {
     @foreach (var part in CurrentPageModel.Parts.OrderBy(o => o.DisplayOrder))
@@ -19,7 +19,8 @@
         if (part is Models.PageParts.TextPart)
         {
             var txt = (Models.PageParts.TextPart)part;
-            <p>@txt.TextContent</p>
+            var displayText = (MarkupString)txt.TextContent.Displayify();
+            <p>@displayText</p>
         }
     }
 }
