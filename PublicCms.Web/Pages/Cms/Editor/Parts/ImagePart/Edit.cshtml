@@ -1,0 +1,29 @@
+﻿@page
+@model PublicCms.Web.Pages.Cms.Editor.Parts.ImagePart.EditModel
+@{
+    ViewData["Title"] = "Redigera bildegenskaper";
+}
+<h1>@ViewData["Title"]</h1>
+<div class="row">
+    <form method="post">
+        <input type="hidden" asp-for="PageId" />
+        <input type="hidden" asp-for="ReturnUrl" />
+        <input type="hidden" asp-for="EditIndex" />
+        <div class="form-group">
+            <label asp-for="Input.Src" class="control-label"></label>
+            <span>@Model.Input.Src</span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.AltText" class="control-label"></label>
+            <input asp-for="Input.AltText" class="form-control" />
+            <span asp-validation-for="Input.AltText" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.Width" class="control-label"></label>
+            <input asp-for="Input.Width" class="form-control" />
+            <span asp-validation-for="Input.Width" class="text-danger"></span>
+        </div>
+
+        <input type="submit" value="Spara" />
+    </form>
+</div>
