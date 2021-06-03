@@ -12,8 +12,8 @@ namespace PublicCms.Web.Models.InputModels
         public string Src { get; set; }
         [Display(Name ="Alternativ text")]
         public string AltText { get; set; }
-        [Display(Name ="Bredd på bild")]
-        public int Width { get; set; }
+        [Display(Name ="Bredd på bild (antal pixlar)")]
+        public int? Width { get; set; }
 
     }
 }
