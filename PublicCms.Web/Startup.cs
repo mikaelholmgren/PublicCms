@@ -30,6 +30,7 @@ namespace PublicCms.Web
         {
             services.AddScoped<AdminService>();
             services.AddScoped<IContentService, ContentService>();
+            services.AddScoped<ISettingsService, SettingsService>();
             services.AddSingleton<MongoService>();
             services.AddDbContext<IdentityContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("IdentityConnection")));

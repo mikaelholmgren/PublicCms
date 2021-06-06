@@ -28,6 +28,8 @@ namespace PublicCms.Web
                     // normally you wouldn't hardcode this password. But for demo purposes, its set here.
                     await adminService.CreateAdmin("Admin123!");
                 }
+                var settings = scope.ServiceProvider.GetRequiredService<ISettingsService>();
+                await settings.CreateSiteSettingsAsync("Vår sajt");
             }
             builder.Run();
 
