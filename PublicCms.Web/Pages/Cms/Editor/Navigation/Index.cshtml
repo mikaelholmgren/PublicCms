@@ -1,0 +1,36 @@
+﻿@page
+@inject IContentService _cs
+@using Models
+@using Services
+@model PublicCms.Web.Pages.Cms.Editor.Navigation.IndexModel
+@{
+    ViewData["Title"] = "Hantera sajtnavigation";
+}
+<h1>@ViewData["Title"]</h1>
+<div class="row">
+    <div class="create">
+
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Sidnamn</th>
+                <th>URL</th>
+                <th>Åtgärder</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CurrentNavItems)
+            {
+                var curPage = await _cs.GetPageByIdAsync<ContentPage>(item.PageId);
+                <tr>
+                    <td>@curPage.Name</td>
+                    <td>/@curPage.Slug</td>
+                    <td>
+                        åtgärd
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

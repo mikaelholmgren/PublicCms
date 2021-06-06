@@ -13,7 +13,7 @@ namespace PublicCms.Web.Models
             Type = SettingsTypes.Site;
         }
         public string SiteName { get; set; }
-        public List<PageNavigationItem> TopNavigation { get; set; }
+        public List<PageNavigationItem> TopNavigation { get; set; } = new();
         public List<BasePart> Footer { get; set; }
     }
 }
