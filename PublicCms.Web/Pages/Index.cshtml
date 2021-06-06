@@ -2,6 +2,7 @@
 @model IndexModel
 @{
     ViewData["Title"] = Model.CurrentPage.Name;
+    ViewData["SiteName"] = Model.CurrentSiteSettings.SiteName;
 }
 
 <div class="text-center">

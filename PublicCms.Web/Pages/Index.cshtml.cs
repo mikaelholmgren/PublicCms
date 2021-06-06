@@ -13,15 +13,17 @@ namespace PublicCms.Web.Pages
     public class IndexModel : PageModel
     {
         private readonly IContentService _cs;
+        private readonly ISettingsService _ss;
 
-        public IndexModel(IContentService cs)
+        public IndexModel(IContentService cs, ISettingsService ss)
         {
             this._cs = cs;
+            _ss = ss;
         }
         [BindProperty(SupportsGet = true)]
         public string Slug { get; set; }
         public ContentPage CurrentPage { get; set; }
-
+        public SiteSettings CurrentSiteSettings { get; set; }
         public async Task<IActionResult> OnGetAsync()
         {
             if (Slug == null)
@@ -35,6 +37,7 @@ namespace PublicCms.Web.Pages
             else
             CurrentPage = await _cs.GetPageBySlugAsync(Slug);
             if (CurrentPage == null) return NotFound();
+            CurrentSiteSettings = await _ss.GetSiteSettingsAsync();
             return Page();
         }
     }
