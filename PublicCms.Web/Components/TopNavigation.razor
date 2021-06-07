@@ -1,0 +1,35 @@
+﻿@using PublicCms.Web.Services
+@using PublicCms.Web.Models
+@inject IContentService _cs
+@inject ISettingsService _ss
+<ul class="navbar-nav flex-grow-1">
+    <li class="nav-item">
+        <a class="nav-link text-dark" href="/">@startPageName</a>
+    </li>
+    @foreach (var item in topNavigation)
+    {
+        var curPage = navPages.FirstOrDefault(i => i.Id == item.PageId);
+        <li class="nav-item">
+            <a class="nav-link text-dark" href="/@curPage.Slug">@curPage.Name</a>
+        </li>
+
+    }
+</ul>
+
+@code {
+    private List<PageNavigationItem> topNavigation = new();
+    private List<ContentPage> navPages = new();
+    private string startPageName = "";
+    protected async override Task OnInitializedAsync()
+    {
+        var siteSettings = await _ss.GetSiteSettingsAsync();
+        topNavigation = siteSettings.TopNavigation.OrderBy(d => d.DisplayOrder).ToList();
+        var startPage = await _cs.GetStartPageAsync();
+        startPageName = startPage == null ? "Ingen startsida" : startPage.Name;
+        foreach (var item in topNavigation)
+        {
+            var curPage = await _cs.GetPageByIdAsync<ContentPage>(item.PageId);
+            navPages.Add(curPage);
+        }
+    }
+}
