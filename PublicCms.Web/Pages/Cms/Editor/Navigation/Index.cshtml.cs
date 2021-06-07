@@ -24,5 +24,12 @@ namespace PublicCms.Web.Pages.Cms.Editor.Navigation
             var mySettings = await _ss.GetSiteSettingsAsync();
             CurrentNavItems = mySettings.TopNavigation;
         }
+        public async Task<IActionResult> OnGetRemove(int index)
+        {
+            var mySettings = await _ss.GetSiteSettingsAsync();
+            mySettings.TopNavigation.RemoveAll(r => r.DisplayOrder == index);
+            await _ss.SaveSiteSettingsAsync(mySettings);
+            return RedirectToPage("./index");
+        }
     }
 }

@@ -27,7 +27,7 @@
                     <td>@curPage.Name</td>
                     <td>/@curPage.Slug</td>
                     <td>
-                        åtgärd
+                        <a asp-page-handler="Remove" asp-route-index="@item.DisplayOrder" onclick="return confirm('Vill du ta bort @curPage.Name från navigationen?')"><i class="trash"></i> Ta bort</a>
                     </td>
                 </tr>
             }
