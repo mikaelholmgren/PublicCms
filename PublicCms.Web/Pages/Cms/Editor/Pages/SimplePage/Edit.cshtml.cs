@@ -46,9 +46,10 @@ namespace PublicCms.Web.Pages.Cms.Editor.Pages.SimplePage
         public async Task<IActionResult> OnGetRemoveImageAsync(int orderNumber)
         {
             CurrentPage = await _cs.GetPageByIdAsync<Models.SimplePage>(PageId);
-            var imageToRemove =(Models.PageParts.ImagePart) CurrentPage.Parts.FirstOrDefault(l => l.DisplayOrder == orderNumber);
-            var fileToRemove =$"./wwwroot/{imageToRemove.Src}";
-            System.IO.File.Delete(fileToRemove);
+            var imageToRemove = (Models.PageParts.ImagePart)CurrentPage.Parts.FirstOrDefault(l => l.DisplayOrder == orderNumber);
+            var fileToRemove = $"./wwwroot/{imageToRemove.Src}";
+            if (System.IO.File.Exists(fileToRemove))
+                System.IO.File.Delete(fileToRemove);
             CurrentPage.Parts.Remove(imageToRemove);
             await _cs.SavePageAsync(CurrentPage);
             return RedirectToPage("./edit", new { pageId = PageId });

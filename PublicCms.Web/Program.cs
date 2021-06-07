@@ -7,6 +7,7 @@ using PublicCms.Data;
 using PublicCms.Web.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,6 +31,7 @@ namespace PublicCms.Web
                 }
                 var settings = scope.ServiceProvider.GetRequiredService<ISettingsService>();
                 await settings.CreateSiteSettingsAsync("Vår sajt");
+                if (!System.IO.Directory.Exists("./wwwroot/Uploads/Images")) Directory.CreateDirectory("./wwwroot/Uploads/Images");
             }
             builder.Run();
 
