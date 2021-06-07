@@ -1,0 +1,30 @@
+﻿@using PublicCms.Web.Models
+@if (CurrentItem != 1 && !isFirst)
+{
+<span>
+    <a href="?handler=@handler&direction=0&item=@CurrentItem">Upp</a>
+</span>
+}
+@if (CurrentItem  < maxIndex && !isLast)
+{
+<span class="ml-1">
+    <a href="?handler=@handler&direction=1&item=@CurrentItem">Ner</a>
+</span>
+}
+
+@code {
+    [Parameter]
+    public List<PageNavigationItem> ReorderableList { get; set; }
+    [Parameter]
+    public int CurrentItem { get; set; }
+    private string handler = "Reorder";
+    private int maxIndex;
+    private bool isFirst;
+    private bool isLast;
+    protected override void OnInitialized()
+    {
+        maxIndex = ReorderableList.Max(i => i.DisplayOrder);
+        isFirst = ReorderableList.FirstOrDefault(d => d.DisplayOrder < CurrentItem) == null;
+        isLast = ReorderableList.FirstOrDefault(d => d.DisplayOrder > CurrentItem) == null;
+    }
+}

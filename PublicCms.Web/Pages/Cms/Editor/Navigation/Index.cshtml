@@ -27,6 +27,7 @@
                     <td>@curPage.Name</td>
                     <td>/@curPage.Slug</td>
                     <td>
+                        <component type="typeof(Components.ReOrder)" render-mode="Static" param-ReorderableList="@Model.CurrentNavItems" param-CurrentItem="@item.DisplayOrder" />
                         <a asp-page-handler="Remove" asp-route-index="@item.DisplayOrder" onclick="return confirm('Vill du ta bort @curPage.Name från navigationen?')"><i class="trash"></i> Ta bort</a>
                     </td>
                 </tr>
