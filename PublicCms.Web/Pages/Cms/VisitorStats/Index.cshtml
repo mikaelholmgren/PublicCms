@@ -1,0 +1,27 @@
+﻿@page
+@model PublicCms.Web.Pages.Cms.VisitorStats.IndexModel
+@{
+    ViewData["Title"] = "Besöksstatistik för sidor";
+}
+<h1>@ViewData["Title"]</h1>
+<p>Nedan visas sidor sorterade på mest besökta först. Sidor utan besök visas ej.</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Sida</th>
+            <th>URL</th>
+            <th>Antal besök</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.CurrentStats.OrderByDescending(o => o.Visits))
+        {
+            var pg = Model.AllPages.FirstOrDefault(i => i.Id == item.Id);
+            <tr>
+                <td>@pg.Name</td>
+                <td>/@pg.Slug</td>
+                <td>@item.Visits</td>
+            </tr>
+        }
+    </tbody>
+</table>

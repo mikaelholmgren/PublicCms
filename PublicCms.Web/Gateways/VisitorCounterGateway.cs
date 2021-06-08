@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using PublicCms.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,11 @@ namespace PublicCms.Web.Gateways
 
                 _logger.LogError($"Adding visitor {ex.Message}");
             }
+        }
+        public async Task<IEnumerable<VisitorModel>> GetAllVisitorStatsAsync()
+        {
+            var list = await _httpClient.GetFromJsonAsync<IEnumerable<VisitorModel>>(apiURL);
+            return list;
         }
     }
     public class SubmitModel
