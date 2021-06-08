@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /PublicCms.Web/Identity.db
 /PublicCms.Web/wwwroot/Uploads
+/VisitorCounterAPI/Visitors.db

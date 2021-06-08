@@ -36,7 +36,7 @@ namespace VisitorCounterAPI
             });
 
             services.AddDbContext<VisitorCounterAPIContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("VisitorCounterAPIContext")));
+                    options.UseSqlite(Configuration.GetConnectionString("VisitorCounterAPIContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
