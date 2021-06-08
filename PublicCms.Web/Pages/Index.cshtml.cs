@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using PublicCms.Data;
+using PublicCms.Web.Gateways;
 using PublicCms.Web.Models;
 using PublicCms.Web.Services;
 using System;
@@ -14,11 +17,15 @@ namespace PublicCms.Web.Pages
     {
         private readonly IContentService _cs;
         private readonly ISettingsService _ss;
+        private readonly IVisitorCounterGateway _vcg;
+        private readonly SignInManager<AppUser> _sim;
 
-        public IndexModel(IContentService cs, ISettingsService ss)
+        public IndexModel(IContentService cs, ISettingsService ss, IVisitorCounterGateway vcg, SignInManager<AppUser> sim)
         {
             this._cs = cs;
             _ss = ss;
+            this._vcg = vcg;
+            this._sim = sim;
         }
         [BindProperty(SupportsGet = true)]
         public string Slug { get; set; }
@@ -38,6 +45,7 @@ namespace PublicCms.Web.Pages
             CurrentPage = await _cs.GetPageBySlugAsync(Slug);
             if (CurrentPage == null) return NotFound();
             CurrentSiteSettings = await _ss.GetSiteSettingsAsync();
+            if (!_sim.IsSignedIn(User)) await _vcg.AddVisitToPageAsync(CurrentPage.Id);
             return Page();
         }
     }

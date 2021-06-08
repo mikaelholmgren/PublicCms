@@ -32,6 +32,8 @@ namespace PublicCms.Web
             services.AddScoped<IContentService, ContentService>();
             services.AddScoped<ISettingsService, SettingsService>();
             services.AddSingleton<MongoService>();
+            services.AddHttpClient<Gateways.VisitorCounterGateway>();
+            services.AddSingleton<Gateways.IVisitorCounterGateway, Gateways.VisitorCounterGateway>();
             services.AddDbContext<IdentityContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("IdentityConnection")));
             services.AddIdentity<AppUser, IdentityRole>(options =>
