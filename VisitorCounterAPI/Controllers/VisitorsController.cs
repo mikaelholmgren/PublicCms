@@ -45,15 +45,23 @@ namespace VisitorCounterAPI.Controllers
         // PUT: api/Visitors/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutVisitor(Guid id, Visitor visitor)
+        public async Task<IActionResult> PutVisitor(Guid id, SubmitModel submit)
         {
-            if (id != visitor.Id)
+            if (!submit.Increment)
             {
                 return BadRequest();
             }
-
-            _context.Entry(visitor).State = EntityState.Modified;
-
+            var visitor = await _context.Visitor.FindAsync(id);
+            if (visitor == null)
+            {
+                visitor = new() { Id = id, Visits = 1 };
+                _context.Visitor.Add(visitor);
+            }
+            else
+            {
+                _context.Entry(visitor).State = EntityState.Modified;
+                visitor.Visits++;
+            }
             try
             {
                 await _context.SaveChangesAsync();
