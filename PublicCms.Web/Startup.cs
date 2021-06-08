@@ -47,6 +47,7 @@ namespace PublicCms.Web
             }
                 );
             services.AddSession();
+            services.AddControllers();
             services.AddRazorPages(options =>
             {
                 options.Conventions.AuthorizeFolder("/Cms", "AdminPolicy");
@@ -83,6 +84,7 @@ namespace PublicCms.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }

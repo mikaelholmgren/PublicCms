@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace PublicCms.Web.Models
@@ -14,8 +15,10 @@ namespace PublicCms.Web.Models
 
         public string Name { get; set; }
         public string Slug { get; set; }
+        [JsonIgnore]
         public bool IsStartPage { get; set; }
         [BsonIgnore]
+        [JsonIgnore]
         public Type DisplayComponent { get; set; }
 
     }
