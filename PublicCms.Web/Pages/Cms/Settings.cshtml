@@ -1,0 +1,23 @@
+﻿@page
+@model PublicCms.Web.Pages.Cms.SettingsModel
+@{
+    ViewData["Title"] = "Sajtinställningar";
+}
+<h1>@ViewData["Title"]</h1>
+<p>Dessa inställningar är globala för sajten</p>
+<div class="row">
+    <form method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="SiteName">Sajtens namn</label>
+            <input asp-for="SiteName" class="form-control" />
+            <span asp-validation-for="SiteName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ConsentText">Cookie banner text</label>
+            <textarea asp-for="ConsentText"></textarea>
+            <span asp-validation-for="ConsentText" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save"></i><span class="ml-1">Spara</span></button>
+    </form>
+</div>
