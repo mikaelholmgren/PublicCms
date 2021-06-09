@@ -20,7 +20,9 @@
         {
             var txt = (Models.PageParts.TextPart)part;
             var displayText = (MarkupString)txt.TextContent.Displayify();
-            <p>@displayText</p>
+            <div class="textblock">
+                <p>@displayText</p>
+            </div>
         }
     }
 }

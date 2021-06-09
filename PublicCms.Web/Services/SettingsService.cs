@@ -4,6 +4,7 @@ using MongoDB.Driver;
 using PublicCms.Web.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,6 +15,8 @@ namespace PublicCms.Web.Services
         private readonly IConfiguration _config;
         private readonly MongoService _ms;
         private readonly IMongoCollection<SiteSettings> _siteSettingsCollection;
+        private string _themesPath = "./wwwroot/css/themes";
+
         public SettingsService(IConfiguration config, MongoService ms)
         {
             _config = config;
@@ -45,6 +48,19 @@ namespace PublicCms.Web.Services
             var mySettings = await GetSiteSettingsAsync();
             if (mySettings == null) return string.Empty;
             return mySettings.SiteName;
+        }
+        public List<(string FileName, string DisplayText)> GetThemeFiles()
+        {
+            List<(string FileName, string DisplayText)> entries = new();
+            var files = Directory.GetFileSystemEntries(_themesPath);
+            foreach (var file in files)
+            {
+                var lines = File.ReadLines(file);
+                var text = lines.First();
+                text = text.Substring(2, text.Length - 4);
+                entries.Add((Path.GetFileName(file), text));
+            }
+            return entries;
         }
     }
 }

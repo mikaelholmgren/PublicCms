@@ -1,0 +1,20 @@
+﻿@page
+@model PublicCms.Web.Pages.Cms.Themes.IndexModel
+@{
+    ViewData["Title"] = "Välj tema";
+}
+<h1>@ViewData["Title"]</h1>
+<p>Välj ett tema</p>
+<ul class="list-unstyled">
+    @foreach (var item in Model.Themes)
+    {
+        if (item.FileName != Model.SiteSettings.ThemeCssFile)
+        {
+            <li><a asp-route-select="@item.FileName">@item.DisplayText</a></li>
+        }
+        else
+        {
+            <li>@item.DisplayText</li>
+        }
+    }
+</ul>
