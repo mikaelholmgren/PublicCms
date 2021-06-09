@@ -13,6 +13,7 @@ using PublicCms.Web.Services;
 using PublicCms.Data;
 using Microsoft.AspNetCore.Identity;
 using FluentAssertions.Common;
+using Microsoft.AspNetCore.Http;
 
 namespace PublicCms.Web
 {
@@ -56,7 +57,12 @@ namespace PublicCms.Web
             {
                 options.LoginPath = "/login";
             });
-            
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -75,7 +81,7 @@ namespace PublicCms.Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseCookiePolicy();
             app.UseRouting();
             app.UseSession();
             app.UseAuthentication();

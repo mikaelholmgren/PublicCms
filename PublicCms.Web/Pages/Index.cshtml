@@ -1,9 +1,11 @@
 ﻿@page "{slug?}"
+@using Extensions
 @model IndexModel
 @{
     ViewData["Title"] = Model.CurrentPage.Name;
     ViewData["SiteName"] = Model.CurrentSiteSettings.SiteName;
     ViewData["ThemeCss"] = Model.CurrentSiteSettings.ThemeCssFile;
+    ViewData["ConsentText"] = Model.CurrentSiteSettings.ConsentText.Displayify();
 }
 
 <div class="text-center">
