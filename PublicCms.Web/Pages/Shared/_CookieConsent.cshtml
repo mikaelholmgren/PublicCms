@@ -4,13 +4,20 @@
     var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
     var showBanner = !consentFeature?.CanTrack ?? false;
     var cookieString = consentFeature?.CreateConsentCookie();
+    var privacyPageUrl =(string) ViewData["PrivacyPageUrl"];
 }
 
 @if (showBanner && ViewData["ConsentText"] != null)
 {
     <div id="cookieConsent" class="row alert alert-info alert-dismissible fade show" role="alert">
         <div class="col-10">
-            @Html.Raw(ViewData["ConsentText"])
+            <p>
+                @Html.Raw(ViewData["ConsentText"])
+            </p>
+            @if (!string.IsNullOrEmpty(privacyPageUrl))
+                {
+                <p> För mer info, se vår <a href="@privacyPageUrl" target="_blank">Integritetspolicysida</a></p>
+                }
         </div>
         <div class="col-2">
             <button type="button" class="accept-policy close p-0" data-dismiss="alert" aria-label="Acceptera" data-cookie-string="@cookieString">

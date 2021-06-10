@@ -18,6 +18,12 @@
             <textarea asp-for="ConsentText"></textarea>
             <span asp-validation-for="ConsentText" class="text-danger"></span>
         </div>
+        <div class="form-group">
+            <label asp-for="PrivacyPageUrl">URL till integritetspolicysida (inled med /)</label>
+            <input asp-for="PrivacyPageUrl" class="form-control" />
+            <span asp-validation-for="PrivacyPageUrl" class="text-danger"></span>
+        </div>
+
         <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save"></i><span class="ml-1">Spara</span></button>
     </form>
 </div>

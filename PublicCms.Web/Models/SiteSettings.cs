@@ -20,5 +20,6 @@ namespace PublicCms.Web.Models
         public List<BasePart> Footer { get; set; }
         [Display(Name ="Text på cookiebanner")]
         public string ConsentText { get; set; }
+        public string PrivacyPageUrl { get; set; } = "";
     }
 }
