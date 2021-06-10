@@ -1,0 +1,42 @@
+﻿/*Lila tema*/
+body {
+}
+
+.navbar {
+    background-color: rebeccapurple !important;
+}
+
+.nav-item a {
+    color: white !important;
+}
+
+.nav-item button {
+    color: white !important;
+}
+
+.navbar-brand {
+    color: white !important;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+    color: purple;
+    font-weight: bold !important;
+}
+
+.textblock {
+    color: rebeccapurple;
+    background-color: white
+}
+
+footer {
+    background-color: rebeccapurple !important;
+}
+
+    footer div {
+        color: white !important;
+    }
+
+        footer div a {
+            color: mediumpurple;
+        }

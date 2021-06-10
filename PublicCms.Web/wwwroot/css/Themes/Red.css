@@ -1,0 +1,42 @@
+﻿/*Rött tema*/
+body {
+}
+
+.navbar {
+    background-color: darkred !important;
+}
+
+.nav-item a {
+    color: white !important;
+}
+
+.nav-item button {
+    color: white !important;
+}
+
+.navbar-brand {
+    color: white !important;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+    color: indianred;
+    font-weight: bold !important;
+}
+
+.textblock {
+    color: darkred;
+    background-color: white
+}
+
+footer {
+    background-color: darkred !important;
+}
+
+    footer div {
+        color: white !important;
+    }
+
+        footer div a {
+            color: indianred;
+        }

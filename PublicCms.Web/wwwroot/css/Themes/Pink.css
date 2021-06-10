@@ -1,0 +1,42 @@
+﻿/*Rosa tema*/
+body {
+}
+
+.navbar {
+    background-color: deeppink !important;
+}
+
+.nav-item a {
+    color: white !important;
+}
+
+.nav-item button {
+    color: white !important;
+}
+
+.navbar-brand {
+    color: white !important;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+    color: hotpink;
+    font-weight: bold !important;
+}
+
+.textblock {
+    color: deeppink;
+    background-color: white
+}
+
+footer {
+    background-color: deeppink !important;
+}
+
+    footer div {
+        color: white !important;
+    }
+
+        footer div a {
+            color: lightpink;
+        }

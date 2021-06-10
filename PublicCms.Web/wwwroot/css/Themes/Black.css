@@ -1,0 +1,42 @@
+﻿/*Svart tema*/
+body {
+}
+
+.navbar {
+    background-color: black !important;
+}
+
+.nav-item a {
+    color: white !important;
+}
+
+.nav-item button {
+    color: white !important;
+}
+
+.navbar-brand {
+    color: white !important;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+    color: black;
+    font-weight: bold !important;
+}
+
+.textblock {
+    color: black;
+    background-color: white
+}
+
+footer {
+    background-color: black !important;
+}
+
+    footer div {
+        color: white !important;
+    }
+
+        footer div a {
+            color: grey;
+        }

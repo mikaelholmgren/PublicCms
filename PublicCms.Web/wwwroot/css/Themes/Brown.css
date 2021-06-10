@@ -1,0 +1,42 @@
+﻿/*Brunt tema*/
+body {
+}
+
+.navbar {
+    background-color: saddlebrown !important;
+}
+
+.nav-item a {
+    color: white !important;
+}
+
+.nav-item button {
+    color: white !important;
+}
+
+.navbar-brand {
+    color: white !important;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+    color: saddlebrown;
+    font-weight: bold !important;
+}
+
+.textblock {
+    color: saddlebrown;
+    background-color: white
+}
+
+footer {
+    background-color: saddlebrown !important;
+}
+
+    footer div {
+        color: white !important;
+    }
+
+        footer div a {
+            color: sandybrown;
+        }

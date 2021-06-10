@@ -1,0 +1,42 @@
+﻿/*Gult tema*/
+body {
+}
+
+.navbar {
+    background-color: yellow !important;
+}
+
+.nav-item a {
+    color: black!important;
+}
+
+.nav-item button {
+    color: black !important;
+}
+
+.navbar-brand {
+    color: black !important;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+    color: yellow;
+    font-weight: bold !important;
+}
+
+.textblock {
+    color: black;
+    background-color: white
+}
+
+footer {
+    background-color: yellow !important;
+}
+
+    footer div {
+        color: black !important;
+    }
+
+        footer div a {
+            color: grey
+        }
