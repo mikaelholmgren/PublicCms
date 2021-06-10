@@ -5,7 +5,7 @@
     ViewData["Title"] = Model.CurrentPage.Name;
     ViewData["SiteName"] = Model.CurrentSiteSettings.SiteName;
     ViewData["ThemeCss"] = Model.CurrentSiteSettings.ThemeCssFile;
-    ViewData["ConsentText"] = Model.CurrentSiteSettings.ConsentText.Displayify();
+    ViewData["ConsentText"] = !string.IsNullOrEmpty(Model.CurrentSiteSettings.ConsentText) ? Model.CurrentSiteSettings.ConsentText.Displayify() : null;
     ViewData["PrivacyPageUrl"] = Model.CurrentSiteSettings.PrivacyPageUrl;
 }
 
