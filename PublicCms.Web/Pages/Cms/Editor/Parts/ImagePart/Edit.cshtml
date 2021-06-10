@@ -1,7 +1,7 @@
 ﻿@page
 @model PublicCms.Web.Pages.Cms.Editor.Parts.ImagePart.EditModel
 @{
-    ViewData["Title"] = "Redigera bildegenskaper";
+    ViewData["Title"] = $"Redigera bildegenskaper i {Model.Zone}";
 }
 <h1>@ViewData["Title"]</h1>
 <div class="row">
@@ -9,6 +9,7 @@
         <input type="hidden" asp-for="PageId" />
         <input type="hidden" asp-for="ReturnUrl" />
         <input type="hidden" asp-for="EditIndex" />
+        <input type="hidden" asp-for="Zone" />
         <div class="form-group">
             <label asp-for="Input.Src" class="control-label"></label>
             <span>@Model.Input.Src</span>

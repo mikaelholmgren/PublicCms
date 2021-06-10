@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PublicCms.Web.Models;
 using PublicCms.Web.Models.InputModels;
+using PublicCms.Web.Models.PageParts;
 using PublicCms.Web.Services;
 
 namespace PublicCms.Web.Pages.Cms.Editor.Parts.LinkPart
@@ -24,20 +25,37 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.LinkPart
         public Guid PageId { get; set; }
         [BindProperty(SupportsGet = true)]
         public string ReturnUrl { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public ZoneTypes Zone { get; set; }
         public void OnGet()
         {
 
         }
         public async Task<IActionResult> OnPostAsync()
         {
+            List<BasePart> parts = new();
             var page = await _cs.GetPageByIdAsync<ContentPage>(PageId);
             if (page is SimplePage)
             {
                 int displayOrder = 0;
                 SimplePage sp = (SimplePage)page;
-                if (sp.Parts.Count == 0) displayOrder++;
+                switch (Zone)
+                {
+                    case ZoneTypes.Main:
+                        parts = sp.Parts;
+                        break;
+                    case ZoneTypes.SideBar:
+                        parts = sp.SideBar;
+                        break;
+                    case ZoneTypes.Footer:
+                        parts = sp.Footer;
+                        break;
+                    default:
+                        break;
+                }
+                if (parts.Count == 0) displayOrder++;
                 else
-                    displayOrder = sp.Parts.Max(m => m.DisplayOrder) + 1;
+                    displayOrder = parts.Max(m => m.DisplayOrder) + 1;
                 Models.PageParts.LinkPart lp = new()
                 {
                     Url = Input.Url,
@@ -45,7 +63,7 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.LinkPart
                     DisplayOrder = displayOrder
 
                 };
-                sp.Parts.Add(lp);
+                parts.Add(lp);
                 await _cs.SavePageAsync(sp);
             }
             return RedirectToPage(ReturnUrl, new { pageId = PageId });

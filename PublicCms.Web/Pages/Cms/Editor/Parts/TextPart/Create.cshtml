@@ -1,12 +1,13 @@
 ﻿@page
 @model PublicCms.Web.Pages.Cms.Editor.Parts.TextPart.CreateModel
 @{
-    ViewData["Title"] = "Skapa textblock";
+    ViewData["Title"] = $"Skapa textblock i {Model.Zone}";
 }
 <div class="row">
     <form method="post">
         <input type="hidden" asp-for="PageId" />
         <input type="hidden" asp-for="ReturnUrl" />
+        <input type="hidden" asp-for="Zone" />
         <div class="form-group">
             <label asp-for="TextContent"></label>
             <textarea asp-for="TextContent" rows="4" cols="50" class="form-control"></textarea>

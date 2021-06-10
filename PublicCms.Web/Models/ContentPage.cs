@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
+using PublicCms.Web.Models.PageParts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,8 @@ namespace PublicCms.Web.Models
         [BsonIgnore]
         [JsonIgnore]
         public Type DisplayComponent { get; set; }
+        public List<BasePart> Footer { get; set; } = new();
+        public List<BasePart> SideBar { get; set; } = new();
 
     }
 }

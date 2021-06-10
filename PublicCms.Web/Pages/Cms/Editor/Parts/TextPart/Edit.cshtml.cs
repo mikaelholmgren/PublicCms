@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PublicCms.Web.Services;
 using PublicCms.Web.Models;
+using PublicCms.Web.Models.PageParts;
+
 namespace PublicCms.Web.Pages.Cms.Editor.Parts.TextPart
 {
     public class EditModel : PageModel
@@ -24,26 +26,60 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.TextPart
         public string ReturnUrl { get; set; }
         [BindProperty(SupportsGet = true)]
         public int EditIndex { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public ZoneTypes Zone { get; set; }
 
         public async Task OnGetAsync()
         {
+            List<BasePart> parts = new();
+
             var page = await _cs.GetPageByIdAsync<ContentPage>(PageId);
             if (page is SimplePage)
             {
                 SimplePage sp = (SimplePage)page;
-                var txt = (Models.PageParts.TextPart)sp.Parts.FirstOrDefault(l => l.DisplayOrder == EditIndex);
+                switch (Zone)
+                {
+                    case ZoneTypes.Main:
+                        parts = sp.Parts;
+                        break;
+                    case ZoneTypes.SideBar:
+                        parts = sp.SideBar;
+                        break;
+                    case ZoneTypes.Footer:
+                        parts = sp.Footer;
+                        break;
+                    default:
+                        break;
+                }
+                var txt = (Models.PageParts.TextPart)parts.FirstOrDefault(l => l.DisplayOrder == EditIndex);
                 TextContent = txt.TextContent;
             }
 
         }
         public async Task<IActionResult> OnPostAsync()
         {
+            List<BasePart> parts = new();
+
             var page = await _cs.GetPageByIdAsync<ContentPage>(PageId);
             if (page is SimplePage)
             {
                 int displayOrder = 0;
                 SimplePage sp = (SimplePage)page;
-                var txt =(Models.PageParts.TextPart) sp.Parts.FirstOrDefault(t => t.DisplayOrder == EditIndex);
+                switch (Zone)
+                {
+                    case ZoneTypes.Main:
+                        parts = sp.Parts;
+                        break;
+                    case ZoneTypes.SideBar:
+                        parts = sp.SideBar;
+                        break;
+                    case ZoneTypes.Footer:
+                        parts = sp.Footer;
+                        break;
+                    default:
+                        break;
+                }
+                var txt =(Models.PageParts.TextPart) parts.FirstOrDefault(t => t.DisplayOrder == EditIndex);
                 txt.TextContent = TextContent;
                 await _cs.SavePageAsync(sp);
             }

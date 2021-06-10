@@ -1,13 +1,14 @@
 ﻿@page
 @model PublicCms.Web.Pages.Cms.Editor.Parts.ImagePart.CreateModel
 @{
-    ViewData["Title"] = "Ladda upp bild";
+    ViewData["Title"] = $"Ladda upp bild i {Model.Zone}";
 }
 <h1>@ViewData["Title"]</h1>
 <div class="row">
     <form method="post" enctype="multipart/form-data">
         <input type="hidden" asp-for="PageId" />
         <input type="hidden" asp-for="ReturnUrl" />
+        <input type="hidden" asp-for="Zone" />
         <div class="form-group">
             <label asp-for="Input.Src" class="control-label"></label>
             <input asp-for="UploadedFile" type="file" class="form-control-file" />

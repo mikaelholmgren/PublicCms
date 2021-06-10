@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PublicCms.Web.Models;
+using PublicCms.Web.Models.PageParts;
 using PublicCms.Web.Services;
 
 namespace PublicCms.Web.Pages.Cms.Editor.Parts.ImagePart
@@ -29,12 +30,16 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.ImagePart
         public Guid PageId { get; set; }
         [BindProperty(SupportsGet = true)]
         public string ReturnUrl { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public ZoneTypes Zone { get; set; }
 
         public void OnGet()
         {
         }
         public async Task<IActionResult> OnPostAsync()
         {
+            List<BasePart> parts = new();
+
             if (!ModelState.IsValid) return Page();
             if (!System.IO.Directory.Exists("./wwwroot/Uploads/Images")) Directory.CreateDirectory("./wwwroot/Uploads/Images");
             var file = "./wwwroot/Uploads/Images/" + UploadedFile.FileName;
@@ -48,15 +53,29 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.ImagePart
             if (page is SimplePage)
             {
                 SimplePage sp = (SimplePage)page;
+                switch (Zone)
+                {
+                    case ZoneTypes.Main:
+                        parts = sp.Parts;
+                        break;
+                    case ZoneTypes.SideBar:
+                        parts = sp.SideBar;
+                        break;
+                    case ZoneTypes.Footer:
+                        parts = sp.Footer;
+                        break;
+                    default:
+                        break;
+                }
                 Models.PageParts.ImagePart part = new()
                 {
                     Src = filePath,
                     AltText = Input.AltText,
                     Width = Input.Width
                 };
-                var maxIndex = sp.Parts.Max(m => m.DisplayOrder);
+                var maxIndex = parts.Max(m => m.DisplayOrder);
                 part.DisplayOrder = maxIndex + 1;
-                sp.Parts.Add(part);
+                parts.Add(part);
                 await _cs.SavePageAsync(sp);
             }
             return RedirectToPage(ReturnUrl, new { pageId = PageId });

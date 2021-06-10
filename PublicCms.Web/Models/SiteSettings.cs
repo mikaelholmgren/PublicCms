@@ -17,7 +17,8 @@ namespace PublicCms.Web.Models
         public string SiteName { get; set; }
         public string ThemeCssFile { get; set; } = "";
         public List<PageNavigationItem> TopNavigation { get; set; } = new();
-        public List<BasePart> Footer { get; set; }
+        public List<BasePart> Footer { get; set; } = new();
+        public List<BasePart> SideBar { get; set; } = new();
         [Display(Name ="Text på cookiebanner")]
         public string ConsentText { get; set; }
         public string PrivacyPageUrl { get; set; } = "";

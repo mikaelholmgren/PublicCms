@@ -31,6 +31,7 @@ namespace PublicCms.Web.Pages
         public string Slug { get; set; }
         public ContentPage CurrentPage { get; set; }
         public SiteSettings CurrentSiteSettings { get; set; }
+        public bool ShowSideBar { get; set; }
         public async Task<IActionResult> OnGetAsync()
         {
             if (Slug == null)
@@ -45,6 +46,7 @@ namespace PublicCms.Web.Pages
             CurrentPage = await _cs.GetPageBySlugAsync(Slug);
             if (CurrentPage == null) return NotFound();
             CurrentSiteSettings = await _ss.GetSiteSettingsAsync();
+            ShowSideBar = CurrentPage.SideBar.Count > 0;
             if (!_sim.IsSignedIn(User)) await _vcg.AddVisitToPageAsync(CurrentPage.Id);
             return Page();
         }

@@ -26,51 +26,167 @@
         <div class="form-group">
             <p>Sidans Url kommer att uppdateras om du ändrar namnet</p>
         </div>
-
+        <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save"></i><span class="ml-1">Spara</span></button>
     </div>
 
-    <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save"></i><span class="ml-1">Spara</span></button>
+
 </form>
 @if (Model.CurrentPage.Parts.Count() > 0)
 {
+    <p>Siddelar</p>
     @foreach (var part in Model.CurrentPage.Parts.OrderBy(p => p.DisplayOrder))
     {
         var partType = part.GetType().Name;
         var editPage = $"/cms/editor/parts/{partType}/edit";
-<div>
-    @if (part is Models.PageParts.TextPart)
-    {
-        var txt = (Models.PageParts.TextPart)part;
-        <p>@Html.Raw(txt.TextContent.Displayify())</p>
-    }
-    @if (part is Models.PageParts.LinkPart)
-    {
-        var lnk = (Models.PageParts.LinkPart)part;
-        <p>@lnk.DisplayText</p>
-    }
+        <div>
+            @if (part is Models.PageParts.TextPart)
+            {
+                var txt = (Models.PageParts.TextPart)part;
+                <p>@Html.Raw(txt.TextContent.Displayify())</p>
+            }
+            @if (part is Models.PageParts.LinkPart)
+            {
+                var lnk = (Models.PageParts.LinkPart)part;
+                <p>@lnk.DisplayText</p>
+            }
 
-    <span>
-        <a asp-page="@editPage" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-EditIndex="@part.DisplayOrder">Redigera @part.DisplayName</a>
-    </span>
-    @if (part is Models.PageParts.ImagePart)
-    {
-        var img = (Models.PageParts.ImagePart)part;
-        <p>
-            <span><img src="/@img.Src" alt="@img.AltText" width="@img.Width" /></span>
-            <span><a asp-page-handler="RemoveImage" asp-route-pageId="@Model.PageId" asp-route-orderNumber="@part.DisplayOrder">Ta bort bild</a></span>
+            <span>
+                <a asp-page="@editPage" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-EditIndex="@part.DisplayOrder" asp-route-zone="Main">Redigera @part.DisplayName</a>
+            </span>
+            @if (part is Models.PageParts.ImagePart)
+            {
+                var img = (Models.PageParts.ImagePart)part;
+                <p>
+                    <span><img src="/@img.Src" alt="@img.AltText" width="@img.Width" /></span>
+                    <span><a asp-page-handler="RemoveImage" asp-route-pageId="@Model.PageId" asp-route-orderNumber="@part.DisplayOrder">Ta bort bild</a></span>
 
-        </p>
+                </p>
+            }
+            else
+            {
+                <span>
+                    <a asp-route-pageId="@Model.PageId" asp-route-orderNumber="@part.DisplayOrder" asp-page-handler="RemovePart">Ta bort @part.DisplayName</a>
+                </span>
+            }
+        </div>
     }
-    else
+} @*PageParts*@
+@if (Model.CurrentPage.SideBar.Count() > 0)
+{
+    <p>Delar i sidebar (Dessa ersätter default för sajten på denna sida)</p>
+    @foreach (var part in Model.CurrentPage.SideBar.OrderBy(p => p.DisplayOrder))
     {
-        <span>
-            <a asp-route-pageId="@Model.PageId" asp-route-orderNumber="@part.DisplayOrder" asp-page-handler="RemovePart">Ta bort @part.DisplayName</a>
-        </span>
+        var partType = part.GetType().Name;
+        var editPage = $"/cms/editor/parts/{partType}/edit";
+        <div>
+            @if (part is Models.PageParts.TextPart)
+            {
+                var txt = (Models.PageParts.TextPart)part;
+                <p>@Html.Raw(txt.TextContent.Displayify())</p>
+            }
+            @if (part is Models.PageParts.LinkPart)
+            {
+                var lnk = (Models.PageParts.LinkPart)part;
+                <p>@lnk.DisplayText</p>
+            }
+
+            <span>
+                <a asp-page="@editPage" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-EditIndex="@part.DisplayOrder" asp-route-zone="SideBar">Redigera @part.DisplayName</a>
+            </span>
+            @if (part is Models.PageParts.ImagePart)
+            {
+                var img = (Models.PageParts.ImagePart)part;
+                <p>
+                    <span><img src="/@img.Src" alt="@img.AltText" width="@img.Width" /></span>
+                    <span><a asp-page-handler="RemoveImage" asp-route-pageId="@Model.PageId" asp-route-orderNumber="@part.DisplayOrder">Ta bort bild</a></span>
+
+                </p>
+            }
+            else
+            {
+                <span>
+                    <a asp-route-pageId="@Model.PageId" asp-route-orderNumber="@part.DisplayOrder" asp-page-handler="RemovePart">Ta bort @part.DisplayName</a>
+                </span>
+            }
+        </div>
     }
+} @*SideBar Parts*@
+@if (Model.CurrentPage.Footer.Count() > 0)
+{
+    <p>Delar i footern (Dessa ersätter default för sajten på denna sida)</p>
+    @foreach (var part in Model.CurrentPage.Footer.OrderBy(p => p.DisplayOrder))
+    {
+        var partType = part.GetType().Name;
+        var editPage = $"/cms/editor/parts/{partType}/edit";
+        <div>
+            @if (part is Models.PageParts.TextPart)
+            {
+                var txt = (Models.PageParts.TextPart)part;
+                <p>@Html.Raw(txt.TextContent.Displayify())</p>
+            }
+            @if (part is Models.PageParts.LinkPart)
+            {
+                var lnk = (Models.PageParts.LinkPart)part;
+                <p>@lnk.DisplayText</p>
+            }
+
+            <span>
+                <a asp-page="@editPage" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-EditIndex="@part.DisplayOrder" asp-route-zone="Footer">Redigera @part.DisplayName</a>
+            </span>
+            @if (part is Models.PageParts.ImagePart)
+            {
+                var img = (Models.PageParts.ImagePart)part;
+                <p>
+                    <span><img src="/@img.Src" alt="@img.AltText" width="@img.Width" /></span>
+                    <span><a asp-page-handler="RemoveImage" asp-route-pageId="@Model.PageId" asp-route-orderNumber="@part.DisplayOrder">Ta bort bild</a></span>
+
+                </p>
+            }
+            else
+            {
+                <span>
+                    <a asp-route-pageId="@Model.PageId" asp-route-orderNumber="@part.DisplayOrder" asp-page-handler="RemovePart">Ta bort @part.DisplayName</a>
+                </span>
+            }
+        </div>
+    }
+} @*Footer Parts*@
+<div class="row">
+    <div>
+        <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#newmain" aria-controls="newmain" aria-expanded="false">
+            Lägg till del på sidan
+        </button>
+    </div>
 </div>
-    }
-}
-<p><a asp-page="/cms/editor/parts/textpart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path">Lägg till textblock</a></p>
-<p><a asp-page="/cms/editor/parts/linkpart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path">Lägg till länk</a></p>
-<p><a asp-page="/cms/editor/parts/imagepart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path">Lägg till bild</a></p>
+<div class="collapse" id="newmain">
+    <p><a asp-page="/cms/editor/parts/textpart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path">Lägg till textblock</a></p>
+    <p><a asp-page="/cms/editor/parts/linkpart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path">Lägg till länk</a></p>
+    <p><a asp-page="/cms/editor/parts/imagepart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path">Lägg till bild</a></p>
+</div>
 
+<div class="row">
+    <div>
+        <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#newsidebar" aria-controls="newsidebar" aria-expanded="false">
+            Lägg till del till sidebar
+        </button>
+    </div>
+</div>
+<div class="collapse" id="newsidebar">
+    <p><a asp-page="/cms/editor/parts/textpart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-zone="SideBar">Lägg till textblock</a></p>
+    <p><a asp-page="/cms/editor/parts/linkpart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-zone="SideBar">Lägg till länk</a></p>
+    <p><a asp-page="/cms/editor/parts/imagepart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-zone="SideBar">Lägg till bild</a></p>
+</div>
+
+
+<div class="row">
+    <div>
+        <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#newfooter" aria-controls="newfooter" aria-expanded="false">
+            Lägg till del i footern
+        </button>
+    </div>
+</div>
+<div class="collapse" id="newfooter">
+    <p><a asp-page="/cms/editor/parts/textpart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-zone="Footer">Lägg till textblock</a></p>
+    <p><a asp-page="/cms/editor/parts/linkpart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-zone="Footer">Lägg till länk</a></p>
+    <p><a asp-page="/cms/editor/parts/imagepart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-zone="Footer">Lägg till bild</a></p>
+</div>

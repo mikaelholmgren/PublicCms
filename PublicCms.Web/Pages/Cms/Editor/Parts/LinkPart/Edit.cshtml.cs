@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PublicCms.Web.Models;
 using PublicCms.Web.Models.InputModels;
+using PublicCms.Web.Models.PageParts;
 using PublicCms.Web.Services;
 
 namespace PublicCms.Web.Pages.Cms.Editor.Parts.LinkPart
@@ -26,13 +27,31 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.LinkPart
         public string ReturnUrl { get; set; }
         [BindProperty(SupportsGet = true)]
         public int EditIndex { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public ZoneTypes Zone { get; set; }
+
         public async Task OnGetAsync()
         {
+            List<BasePart> parts = new();
             var page = await _cs.GetPageByIdAsync<ContentPage>(PageId);
             if (page is SimplePage)
             {
                 SimplePage sp = (SimplePage)page;
-                Models.PageParts.LinkPart lnk =(Models.PageParts.LinkPart) sp.Parts.FirstOrDefault(l => l.DisplayOrder == EditIndex);
+                switch (Zone)
+                {
+                    case ZoneTypes.Main:
+                        parts = sp.Parts;
+                        break;
+                    case ZoneTypes.SideBar:
+                        parts = sp.SideBar;
+                        break;
+                    case ZoneTypes.Footer:
+                        parts = sp.Footer;
+                        break;
+                    default:
+                        break;
+                }
+                Models.PageParts.LinkPart lnk =(Models.PageParts.LinkPart) parts.FirstOrDefault(l => l.DisplayOrder == EditIndex);
                 Input.Url = lnk.Url;
                 Input.Text = lnk.DisplayText;
                 Input.NewWindow = lnk.OpenInNewWindow;
@@ -42,11 +61,26 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.LinkPart
         }
         public async Task<IActionResult> OnPostAsync()
         {
+            List<BasePart> parts = new();
             var page = await _cs.GetPageByIdAsync<ContentPage>(PageId);
             if (page is SimplePage)
             {
                 SimplePage sp = (SimplePage)page;
-                Models.PageParts.LinkPart lnk =(Models.PageParts.LinkPart) sp.Parts.FirstOrDefault(l => l.DisplayOrder == EditIndex);
+                switch (Zone)
+                {
+                    case ZoneTypes.Main:
+                        parts = sp.Parts;
+                        break;
+                    case ZoneTypes.SideBar:
+                        parts = sp.SideBar;
+                        break;
+                    case ZoneTypes.Footer:
+                        parts = sp.Footer;
+                        break;
+                    default:
+                        break;
+                }
+                Models.PageParts.LinkPart lnk =(Models.PageParts.LinkPart) parts.FirstOrDefault(l => l.DisplayOrder == EditIndex);
                 lnk.Url = Input.Url;
                 lnk.DisplayText = Input.Text;
                 lnk.OpenInNewWindow = Input.NewWindow;

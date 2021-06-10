@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@{
+    string mainClass = Model.ShowSideBar ? "col-md-8" : "col-md-12";
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -27,12 +30,23 @@
     <div class="container">
         <partial name="_CookieConsent" />
         <main role="main" class="pb-3">
-            @RenderBody()
+            <div class="row">
+                <div class="col-md-8">
+                    @RenderBody()
+                </div>
+                @if (Model.ShowSideBar)
+                {
+                    <div class="col-md-4">
+                        <component type="typeof(Components.Parts)" render-mode="Static" param-PartsModel="Model.CurrentPage.SideBar" />
+                    </div>
+                }
+            </div>
         </main>
     </div>
 
     <footer class="border-top footer text-muted">
         <div class="container">
+            <component type="typeof(Components.Parts)" render-mode="Static" param-PartsModel="Model.CurrentPage.Footer" />
             &copy; 2021 - @ViewData["SiteName"]
         </div>
     </footer>

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PublicCms.Web.Models;
+using PublicCms.Web.Models.PageParts;
 using PublicCms.Web.Services;
 
 namespace PublicCms.Web.Pages.Cms.Editor.Parts.ImagePart
@@ -25,13 +26,32 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.ImagePart
         public string ReturnUrl { get; set; }
         [BindProperty(SupportsGet = true)]
         public int EditIndex { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public ZoneTypes Zone { get; set; }
+
         public async Task OnGetAsync()
         {
+            List<BasePart> parts = new();
+
             var page = await _cs.GetPageByIdAsync<ContentPage>(PageId);
             if (page is SimplePage)
             {
                 SimplePage sp = (SimplePage)page;
-                var part = (Models.PageParts.ImagePart)sp.Parts.FirstOrDefault(i => i.DisplayOrder == EditIndex);
+                switch (Zone)
+                {
+                    case ZoneTypes.Main:
+                        parts = sp.Parts;
+                        break;
+                    case ZoneTypes.SideBar:
+                        parts = sp.SideBar;
+                        break;
+                    case ZoneTypes.Footer:
+                        parts = sp.Footer;
+                        break;
+                    default:
+                        break;
+                }
+                var part = (Models.PageParts.ImagePart)parts.FirstOrDefault(i => i.DisplayOrder == EditIndex);
                 Input.Src = part.Src;
                 Input.AltText = part.AltText;
                 Input.Width = part.Width;
@@ -39,13 +59,29 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.ImagePart
         }
         public async Task<IActionResult> OnPostAsync()
         {
+            List<BasePart> parts = new();
+
             if (!ModelState.IsValid) return Page();
 
             var page = await _cs.GetPageByIdAsync<ContentPage>(PageId);
             if (page is SimplePage)
             {
                 SimplePage sp = (SimplePage)page;
-                var part = (Models.PageParts.ImagePart)sp.Parts.FirstOrDefault(i => i.DisplayOrder == EditIndex);
+                switch (Zone)
+                {
+                    case ZoneTypes.Main:
+                        parts = sp.Parts;
+                        break;
+                    case ZoneTypes.SideBar:
+                        parts = sp.SideBar;
+                        break;
+                    case ZoneTypes.Footer:
+                        parts = sp.Footer;
+                        break;
+                    default:
+                        break;
+                }
+                var part = (Models.PageParts.ImagePart)parts.FirstOrDefault(i => i.DisplayOrder == EditIndex);
                 part.AltText = Input.AltText;
                 part.Width = Input.Width;
                 await _cs.SavePageAsync(sp);
