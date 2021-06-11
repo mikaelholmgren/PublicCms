@@ -58,14 +58,14 @@
                 var img = (Models.PageParts.ImagePart)part;
                 <p>
                     <span><img src="/@img.Src" alt="@img.AltText" width="@img.Width" /></span>
-                    <span><a asp-page-handler="RemoveImage" asp-route-pageId="@Model.PageId" asp-route-orderNumber="@part.DisplayOrder">Ta bort bild</a></span>
+                    <span><a asp-page-handler="RemoveImage" asp-route-pageId="@Model.PageId" asp-route-orderNumber="@part.DisplayOrder" asp-route-zone="Main">Ta bort bild</a></span>
 
                 </p>
             }
             else
             {
                 <span>
-                    <a asp-route-pageId="@Model.PageId" asp-route-orderNumber="@part.DisplayOrder" asp-page-handler="RemovePart">Ta bort @part.DisplayName</a>
+                    <a asp-route-pageId="@Model.PageId" asp-route-orderNumber="@part.DisplayOrder" asp-page-handler="RemovePart" asp-route-zone="Main">Ta bort @part.DisplayName</a>
                 </span>
             }
         </div>
@@ -98,14 +98,14 @@
                 var img = (Models.PageParts.ImagePart)part;
                 <p>
                     <span><img src="/@img.Src" alt="@img.AltText" width="@img.Width" /></span>
-                    <span><a asp-page-handler="RemoveImage" asp-route-pageId="@Model.PageId" asp-route-orderNumber="@part.DisplayOrder">Ta bort bild</a></span>
+                    <span><a asp-page-handler="RemoveImage" asp-route-pageId="@Model.PageId" asp-route-orderNumber="@part.DisplayOrder" asp-route-zone="SideBar">Ta bort bild</a></span>
 
                 </p>
             }
             else
             {
                 <span>
-                    <a asp-route-pageId="@Model.PageId" asp-route-orderNumber="@part.DisplayOrder" asp-page-handler="RemovePart">Ta bort @part.DisplayName</a>
+                    <a asp-route-pageId="@Model.PageId" asp-route-orderNumber="@part.DisplayOrder" asp-page-handler="RemovePart" asp-route-zone="SideBar">Ta bort @part.DisplayName</a>
                 </span>
             }
         </div>
@@ -138,14 +138,14 @@
                 var img = (Models.PageParts.ImagePart)part;
                 <p>
                     <span><img src="/@img.Src" alt="@img.AltText" width="@img.Width" /></span>
-                    <span><a asp-page-handler="RemoveImage" asp-route-pageId="@Model.PageId" asp-route-orderNumber="@part.DisplayOrder">Ta bort bild</a></span>
+                    <span><a asp-page-handler="RemoveImage" asp-route-pageId="@Model.PageId" asp-route-orderNumber="@part.DisplayOrder" asp-route-zone="Footer">Ta bort bild</a></span>
 
                 </p>
             }
             else
             {
                 <span>
-                    <a asp-route-pageId="@Model.PageId" asp-route-orderNumber="@part.DisplayOrder" asp-page-handler="RemovePart">Ta bort @part.DisplayName</a>
+                    <a asp-route-pageId="@Model.PageId" asp-route-orderNumber="@part.DisplayOrder" asp-page-handler="RemovePart" asp-route-zone="Footer">Ta bort @part.DisplayName</a>
                 </span>
             }
         </div>

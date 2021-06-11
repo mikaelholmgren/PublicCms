@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using PublicCms.Web.Models.PageParts;
 using PublicCms.Web.Services;
 
 namespace PublicCms.Web.Pages.Cms.Editor.Pages.SimplePage
@@ -35,22 +36,53 @@ namespace PublicCms.Web.Pages.Cms.Editor.Pages.SimplePage
             await _cs.SavePageAsync(CurrentPage);
             return RedirectToPage("./edit", new { pageId = PageId });
         }
-        public async Task<IActionResult> OnGetRemoveAsync(int orderNumber)
+        public async Task<IActionResult> OnGetRemovePartAsync(Models.ZoneTypes zone, int orderNumber)
         {
+            List<BasePart> parts = new();
             CurrentPage = await _cs.GetPageByIdAsync<Models.SimplePage>(PageId);
-            var partToRemove = CurrentPage.Parts.FirstOrDefault(l => l.DisplayOrder == orderNumber);
-            CurrentPage.Parts.Remove(partToRemove);
+            switch (zone)
+            {
+                case Models.ZoneTypes.Main:
+                    parts = CurrentPage.Parts;
+                    break;
+                case Models.ZoneTypes.SideBar:
+                    parts = CurrentPage.SideBar;
+                    break;
+                case Models.ZoneTypes.Footer:
+                    parts = CurrentPage.Footer;
+                    break;
+                default:
+                    break;
+            }
+            var partToRemove = parts.FirstOrDefault(l => l.DisplayOrder == orderNumber);
+            parts.Remove(partToRemove);
             await _cs.SavePageAsync(CurrentPage);
             return RedirectToPage("./edit", new { pageId = PageId });
         }
-        public async Task<IActionResult> OnGetRemoveImageAsync(int orderNumber)
+        public async Task<IActionResult> OnGetRemoveImageAsync(Models.ZoneTypes zone, int orderNumber)
         {
+            List<BasePart> parts = new();
             CurrentPage = await _cs.GetPageByIdAsync<Models.SimplePage>(PageId);
-            var imageToRemove = (Models.PageParts.ImagePart)CurrentPage.Parts.FirstOrDefault(l => l.DisplayOrder == orderNumber);
+            switch (zone)
+            {
+                case Models.ZoneTypes.Main:
+                    parts = CurrentPage.Parts;
+                    break;
+                case Models.ZoneTypes.SideBar:
+                    parts = CurrentPage.SideBar;
+                    break;
+                case Models.ZoneTypes.Footer:
+                    parts = CurrentPage.Footer;
+                    break;
+                default:
+                    break;
+            }
+
+            var imageToRemove = (Models.PageParts.ImagePart)parts.FirstOrDefault(l => l.DisplayOrder == orderNumber);
             var fileToRemove = $"./wwwroot/{imageToRemove.Src}";
             if (System.IO.File.Exists(fileToRemove))
                 System.IO.File.Delete(fileToRemove);
-            CurrentPage.Parts.Remove(imageToRemove);
+            parts.Remove(imageToRemove);
             await _cs.SavePageAsync(CurrentPage);
             return RedirectToPage("./edit", new { pageId = PageId });
         }
