@@ -1,0 +1,35 @@
+﻿@page
+@model PublicCms.Web.Pages.Cms.Editor.Parts.WYSIWYGPart.CreateModel
+@{
+    ViewData["Title"] = $"Skapa innehållsblock i {Model.Zone}";
+}
+<div class="row">
+    
+    <form method="post">
+        <input type="hidden" asp-for="PageId" />
+        <input type="hidden" asp-for="ReturnUrl" />
+        <input type="hidden" asp-for="Zone" />
+
+        <div class="form-group">
+                <label asp-for="TextContent"></label>
+                <textarea asp-for="TextContent" class="form-control"></textarea>
+                <span asp-validation-for="TextContent" class="text-danger"></span>
+            </div>
+
+
+        <button class="btn btn-primary" type="submit" onclick="save()">Skapa</button>
+    </form>
+</div>
+@section Scripts {
+    <script src="https://cdn.ckeditor.com/ckeditor5/28.0.0/classic/ckeditor.js"></script>
+    <script>
+        $(document).ready(function () {
+            ClassicEditor
+                .create(document.querySelector('#TextContent'))
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+
+    </script>
+} 

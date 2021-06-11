@@ -1,5 +1,6 @@
 ﻿@{
     string mainClass = Model.ShowSideBar ? "col-md-8" : "col-md-12";
+
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +47,10 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            <component type="typeof(Components.Parts)" render-mode="Static" param-PartsModel="Model.CurrentPage.Footer" />
+            @if (Model.HaveComponents)
+            {
+                <component type="typeof(Components.Parts)" render-mode="Static" param-PartsModel="Model.CurrentPage.Footer" />
+            }
             &copy; 2021 - @ViewData["SiteName"]
         </div>
     </footer>

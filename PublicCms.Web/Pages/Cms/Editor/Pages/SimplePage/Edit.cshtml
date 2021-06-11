@@ -44,6 +44,12 @@
                 var txt = (Models.PageParts.TextPart)part;
                 <p>@Html.Raw(txt.TextContent.Displayify())</p>
             }
+            @if (part is Models.PageParts.WYSIWYGPart)
+            {
+                var txt = (Models.PageParts.WYSIWYGPart)part;
+                <div>@Html.Raw(txt.TextContent)</div>
+            }
+
             @if (part is Models.PageParts.LinkPart)
             {
                 var lnk = (Models.PageParts.LinkPart)part;
@@ -84,6 +90,12 @@
                 var txt = (Models.PageParts.TextPart)part;
                 <p>@Html.Raw(txt.TextContent.Displayify())</p>
             }
+            @if (part is Models.PageParts.WYSIWYGPart)
+            {
+                var txt = (Models.PageParts.WYSIWYGPart)part;
+                <div>@Html.Raw(txt.TextContent)</div>
+            }
+
             @if (part is Models.PageParts.LinkPart)
             {
                 var lnk = (Models.PageParts.LinkPart)part;
@@ -124,6 +136,12 @@
                 var txt = (Models.PageParts.TextPart)part;
                 <p>@Html.Raw(txt.TextContent.Displayify())</p>
             }
+            @if (part is Models.PageParts.WYSIWYGPart)
+            {
+                var txt = (Models.PageParts.WYSIWYGPart)part;
+                <div>@Html.Raw(txt.TextContent)</div>
+            }
+
             @if (part is Models.PageParts.LinkPart)
             {
                 var lnk = (Models.PageParts.LinkPart)part;
@@ -159,6 +177,7 @@
     </div>
 </div>
 <div class="collapse" id="newmain">
+    <p><a asp-page="/cms/editor/parts/wysiwygpart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path">Lägg till innehåll med visuell editor</a></p>
     <p><a asp-page="/cms/editor/parts/textpart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path">Lägg till textblock</a></p>
     <p><a asp-page="/cms/editor/parts/linkpart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path">Lägg till länk</a></p>
     <p><a asp-page="/cms/editor/parts/imagepart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path">Lägg till bild</a></p>
@@ -172,6 +191,7 @@
     </div>
 </div>
 <div class="collapse" id="newsidebar">
+    <p><a asp-page="/cms/editor/parts/wysiwygpart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-zone="SideBar">Lägg till innehåll med visuell editor</a></p>
     <p><a asp-page="/cms/editor/parts/textpart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-zone="SideBar">Lägg till textblock</a></p>
     <p><a asp-page="/cms/editor/parts/linkpart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-zone="SideBar">Lägg till länk</a></p>
     <p><a asp-page="/cms/editor/parts/imagepart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-zone="SideBar">Lägg till bild</a></p>
@@ -186,6 +206,7 @@
     </div>
 </div>
 <div class="collapse" id="newfooter">
+    <p><a asp-page="/cms/editor/parts/wysiwygpart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-zone="Footer">Lägg till innehåll med visuell editor</a></p>
     <p><a asp-page="/cms/editor/parts/textpart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-zone="Footer">Lägg till textblock</a></p>
     <p><a asp-page="/cms/editor/parts/linkpart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-zone="Footer">Lägg till länk</a></p>
     <p><a asp-page="/cms/editor/parts/imagepart/create" asp-route-pageId="@Model.CurrentPage.Id" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-zone="Footer">Lägg till bild</a></p>

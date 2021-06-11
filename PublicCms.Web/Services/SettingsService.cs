@@ -36,6 +36,7 @@ namespace PublicCms.Web.Services
         public async Task<SiteSettings> GetSiteSettingsAsync()
         {
             SiteSettings mySettings = await _siteSettingsCollection.Find(new BsonDocument()).FirstOrDefaultAsync();
+            if (mySettings == null) return null;
             if (mySettings.TopNavigation == null) mySettings.TopNavigation = new();
             return mySettings;
         }

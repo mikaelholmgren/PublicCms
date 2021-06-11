@@ -32,6 +32,7 @@ namespace PublicCms.Web.Pages
         public ContentPage CurrentPage { get; set; }
         public SiteSettings CurrentSiteSettings { get; set; }
         public bool ShowSideBar { get; set; }
+        public bool HaveComponents { get; set; } = true;
         public async Task<IActionResult> OnGetAsync()
         {
             if (Slug == null)

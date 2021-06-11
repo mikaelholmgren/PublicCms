@@ -2,7 +2,7 @@
 
 namespace PublicCms.Web.Models.PageParts
 {
-    [BsonKnownTypes(typeof(ImagePart), typeof(LinkPart), typeof(TextPart))]
+    [BsonKnownTypes(typeof(ImagePart), typeof(LinkPart), typeof(TextPart), typeof(WYSIWYGPart))]
     public class BasePart
     {
         public int DisplayOrder { get; set; }
