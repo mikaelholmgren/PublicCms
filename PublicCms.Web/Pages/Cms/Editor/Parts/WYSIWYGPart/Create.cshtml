@@ -19,17 +19,56 @@
 
         <button class="btn btn-primary" type="submit">Skapa</button>
     </form>
+    <div class="editor"></div>
 </div>
 @section Scripts {
-    <script src="https://cdn.ckeditor.com/ckeditor5/28.0.0/classic/ckeditor.js"></script>
+    <script src="/js/CKEditor/ckeditor.js"></script>
     <script>
-        $(document).ready(function () {
             ClassicEditor
-                .create(document.querySelector('#TextContent'))
+                .create(document.querySelector('#TextContent'), {
+
+                    toolbar: {
+                        items: [
+                            'heading',
+                            '|',
+                            'bold',
+                            'italic',
+                            'link',
+                            'bulletedList',
+                            'numberedList',
+                            '|',
+                            'outdent',
+                            'indent',
+                            '|',
+                            'imageUpload',
+                            'blockQuote',
+                            'insertTable',
+                            'mediaEmbed',
+                            'undo',
+                            'redo',
+                            'fontColor',
+                            'fontFamily',
+                            'fontSize',
+                            'fontBackgroundColor',
+                            'alignment',
+                            'htmlEmbed',
+                            'removeFormat',
+                            'underline'
+                        ]
+                    },
+                    language: 'sv',
+                    licenseKey: '',
+
+
+
+                })
                 .catch(error => {
+                    console.error('Oops, something went wrong!');
+                    console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+                    console.warn('Build id: ycjvefti66pc-9v1a7ia8jh8');
                     console.error(error);
                 });
-        });
+
 
     </script>
 } 
