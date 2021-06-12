@@ -19,6 +19,7 @@
         @foreach (var item in Model.CurrentStats.OrderByDescending(o => o.Visits))
         {
             var pg = Model.AllPages.FirstOrDefault(i => i.Id == item.Id);
+            if (pg == null) continue;
             <tr>
                 <td>@pg.Name</td>
                 <td>/@pg.Slug</td>
