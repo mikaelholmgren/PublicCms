@@ -54,7 +54,7 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.WYSIWYGPart
                 var txt = (Models.PageParts.WYSIWYGPart)parts.FirstOrDefault(l => l.DisplayOrder == EditIndex);
                 TextContent = txt.TextContent;
             }
-
+//            if (!string.IsNullOrEmpty(TextContent)) TextContent = TextContent.Replace("&", "&amp;");
         }
         public async Task<IActionResult> OnPostAsync()
         {

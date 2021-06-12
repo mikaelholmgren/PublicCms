@@ -11,7 +11,7 @@
         <input type="hidden" asp-for="Zone" />
         <div class="form-group">
             <label asp-for="TextContent"></label>
-            <textarea asp-for="TextContent" rows="4" cols="50" class="form-control"></textarea>
+            <textarea asp-for="TextContent" class="form-control"></textarea>
             <span asp-validation-for="TextContent" class="text-danger"></span>
         </div>
 
@@ -19,3 +19,16 @@
         <button class="btn btn-primary" type="submit">Spara</button>
     </form>
 </div>
+@section Scripts {
+    <script src="https://cdn.ckeditor.com/ckeditor5/28.0.0/classic/ckeditor.js"></script>
+    <script>
+        $(document).ready(function () {
+            ClassicEditor
+                .create(document.querySelector('#TextContent'))
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+
+    </script>
+}
