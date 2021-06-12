@@ -16,6 +16,15 @@
             </div>
 
         }
+        if (part is Models.PageParts.WYSIWYGPart)
+        {
+            var txt = (Models.PageParts.WYSIWYGPart)part;
+            var displayText = (MarkupString)txt.TextContent;
+            <div class="htmlblock">
+                @displayText
+            </div>
+        }
+
         if (part is Models.PageParts.TextPart)
         {
             var txt = (Models.PageParts.TextPart)part;
