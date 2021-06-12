@@ -21,11 +21,13 @@ namespace PublicCms.Web.Pages.Cms.VisitorStats
             this._vcg = vcg;
         }
 
+
         public IEnumerable<VisitorModel> CurrentStats { get; set; }
         public IEnumerable<ContentPage> AllPages { get; private set; }
-
+        public bool ServiceOk { get; set; }
         public async Task OnGetAsync()
         {
+           ServiceOk = await _vcg.VisitorCounterServiceAvailable();
             CurrentStats = await _vcg.GetAllVisitorStatsAsync();
             AllPages = await _cs.GetAllPagesAsync();
         }

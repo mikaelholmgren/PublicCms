@@ -4,6 +4,8 @@
     ViewData["Title"] = "Besöksstatistik för sidor";
 }
 <h1>@ViewData["Title"]</h1>
+@if (Model.ServiceOk)
+{
 <p>Nedan visas sidor sorterade på mest besökta först. Sidor utan besök visas ej.</p>
 <table class="table">
     <thead>
@@ -25,3 +27,8 @@
         }
     </tbody>
 </table>
+}
+else
+{
+    <p class="text-danger">Tjänsten för besöksräknare verkar inte fungera!</p>
+}

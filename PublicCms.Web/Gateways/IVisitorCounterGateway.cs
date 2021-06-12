@@ -9,5 +9,6 @@ namespace PublicCms.Web.Gateways
     {
         Task AddVisitToPageAsync(Guid pageId);
         Task<IEnumerable<VisitorModel>> GetAllVisitorStatsAsync();
+        Task<bool> VisitorCounterServiceAvailable();
     }
 }

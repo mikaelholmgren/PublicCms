@@ -37,9 +37,34 @@ namespace PublicCms.Web.Gateways
                 _logger.LogError($"Adding visitor {ex.Message}");
             }
         }
+        public async Task<bool> VisitorCounterServiceAvailable()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync(apiURL);
+                if (!response.IsSuccessStatusCode) return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+                
+            }
+            return true;
+        }
         public async Task<IEnumerable<VisitorModel>> GetAllVisitorStatsAsync()
         {
-            var list = await _httpClient.GetFromJsonAsync<IEnumerable<VisitorModel>>(apiURL);
+            List<VisitorModel> list = new();
+            try
+            {
+                list = await _httpClient.GetFromJsonAsync<List<VisitorModel>>(apiURL);
+            }
+            catch (Exception)
+            {
+
+                List<VisitorModel> empty = new();
+                return empty;
+            }
+            
             return list;
         }
     }
