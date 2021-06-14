@@ -1,0 +1,26 @@
+﻿@using System.Net.Http
+@using System.Text.Json
+@using WeatherPlugin.Models
+@using WeatherPlugin.Extensions
+<p>Vädret just nu enligt SMHI är @_curSym, @_curTemp grader</p>
+
+@code {
+    private string apiAdress = "https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/16/lat/58/data.json";
+    private SMHIModel Api;
+    private float _curTemp;
+    private WeatherSymbol _curSym;
+    protected async override Task OnInitializedAsync()
+    {
+        using (var http = new HttpClient())
+        {
+            using (var response = await http.GetAsync(apiAdress))
+            {
+                string apiresponse = await response.Content.ReadAsStringAsync();
+                Api = JsonSerializer.Deserialize<SMHIModel>(apiresponse);
+                _curTemp = Api.timeSeries[0].parameters.GetTemperature();
+                _curSym = Api.timeSeries[0].parameters.GetWeatherSymbol();
+            }
+        }
+
+    }
+}
