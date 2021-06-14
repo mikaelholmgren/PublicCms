@@ -2,10 +2,11 @@
 @using System.Text.Json
 @using WeatherPlugin.Models
 @using WeatherPlugin.Extensions
-<p>Vädret just nu enligt SMHI är @_curSym, @_curTemp grader</p>
+<p>Vädret just nu i Stockholm enligt SMHI är @_curSym.GetDisplayText(), @_curTemp grader</p>
 
 @code {
-    private string apiAdress = "https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/16/lat/58/data.json";
+    // Hardcoded Lat/Long for Stockholm for now..
+    private string apiAdress = "https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/18.063240/lat/59.334591/data.json";
     private SMHIModel Api;
     private float _curTemp;
     private WeatherSymbol _curSym;
