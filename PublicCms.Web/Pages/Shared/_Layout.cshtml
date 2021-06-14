@@ -1,4 +1,8 @@
-﻿@{
+﻿@using Extensions
+@using PublicCms.Web.Models
+@using PublicCms.Web.Models.PageParts
+
+@{
     string mainClass = Model.ShowSideBar ? "col-md-8" : "col-md-12";
 
 }
@@ -35,11 +39,32 @@
                 <div class="col-md-8">
                     @RenderBody()
                 </div>
-                @if (Model.ShowSideBar)
+                @if (Model.ShowSideBar && Model.HaveComponents)
                 {
-                    <div class="col-md-4">
-                        <component type="typeof(Components.Parts)" render-mode="Static" param-PartsModel="Model.CurrentPage.SideBar" />
-                    </div>
+                    var parts = (List<BasePart>)Model.CurrentPage.SideBar;
+            <div class="col-md-4">
+                @foreach (var part in parts.OrderBy(o => o.DisplayOrder))
+                {
+                    if (part is Models.PageParts.PluginPart)
+                    {
+                        var plugin = (Models.PageParts.PluginPart)part;
+                        var pluginType = LoadedPlugins.PluginTypes.Where(n => n.DisplayName == plugin.PluginName).FirstOrDefault();
+                        if (pluginType != null)
+                        {
+
+                            <div class="pluginpart">
+                                <component type=pluginType.ComponentType render-mode="Static" />
+                            </div>
+                        }
+                    }
+                    else
+                    {
+
+                        <component type="typeof(Components.Part)" render-mode="Static" param-PartModel="part" />
+                    }
+                }
+
+            </div>
                 }
             </div>
         </main>
@@ -49,7 +74,28 @@
         <div class="container">
             @if (Model.HaveComponents)
             {
-                <component type="typeof(Components.Parts)" render-mode="Static" param-PartsModel="Model.CurrentPage.Footer" />
+                var parts = (List<BasePart>)Model.CurrentPage.Footer;
+                @foreach (var part in parts.OrderBy(o => o.DisplayOrder))
+                {
+                    if (part is Models.PageParts.PluginPart)
+                    {
+                        var plugin = (Models.PageParts.PluginPart)part;
+                        var pluginType = LoadedPlugins.PluginTypes.Where(n => n.DisplayName == plugin.PluginName).FirstOrDefault();
+                        if (pluginType != null)
+                        {
+
+                            <div class="pluginpart">
+                                <component type=pluginType.ComponentType render-mode="Static" />
+                            </div>
+                        }
+                    }
+                    else
+                    {
+
+                        <component type="typeof(Components.Part)" render-mode="Static" param-PartModel="part" />
+                    }
+                }
+
             }
             &copy; 2021 - @ViewData["SiteName"]
         </div>

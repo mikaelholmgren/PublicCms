@@ -1,4 +1,6 @@
 ﻿@using PublicCms.Web.Extensions
+@using Microsoft.AspNetCore.Components
+@using System.Reflection
 @if (CurrentPageModel.Parts.Count() > 0)
 {
     @foreach (var part in CurrentPageModel.Parts.OrderBy(o => o.DisplayOrder))
@@ -33,9 +35,45 @@
                 <p>@displayText</p>
             </div>
         }
+        if (part is Models.PageParts.PluginPart)
+        {
+            var plugin = (Models.PageParts.PluginPart)part;
+            var pluginType = LoadedPlugins.PluginTypes.Where(n => n.DisplayName == plugin.PluginName).FirstOrDefault();
+            if (pluginType != null)
+            {
+                var instance = Activator.CreateInstance(pluginType.ComponentType) as ComponentBase;
+
+<div class="pluginpart">
+@RenderContent(instance)
+    </div>
+                        }
+    }
     }
 }
 @code {
     [Parameter]
     public Models.SimplePage CurrentPageModel { get; set; }
+    RenderFragment RenderContent(ComponentBase instance)
+    {
+        var fragmentField = GetPrivateField(instance.GetType(), "_renderFragment");
+        var value = (RenderFragment)fragmentField.GetValue(instance);
+        return value;
+    }
+    private static FieldInfo GetPrivateField(Type t, String name)
+    {
+        const BindingFlags bf = BindingFlags.Instance |
+            BindingFlags.NonPublic |
+            BindingFlags.DeclaredOnly;
+        FieldInfo fi;
+        while ((fi = t.GetField(name, bf)) == null && (t = t.BaseType) != null) ;
+        return fi;
+    }
+    //RenderFragment drawComponent<T>(T my_inst) where T : ComponentBase
+    //{
+    //    return new RenderFragment(builder => {
+    //        builder.OpenComponent<T>(0);
+    //        builder.AddComponentReferenceCapture(1, inst => { my_inst = (T)inst; });
+    //        builder.CloseComponent();
+    //    });
+    //    }
 }

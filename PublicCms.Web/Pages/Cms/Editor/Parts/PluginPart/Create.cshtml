@@ -1,0 +1,13 @@
+﻿@page
+@model PublicCms.Web.Pages.Cms.Editor.Parts.PluginPart.CreateModel
+@{
+    ViewData["Title"] = "Välj insticksmodul";
+}
+<h1>@ViewData["Title"]</h1>
+<p>Välj en insticksmodul att använda i den här delen:</p>
+<ul class="list-unstyled">
+    @foreach (var plugin in Model.Plugins)
+    {
+        <li><a asp-route-selectedPlugin="@plugin.DisplayName" asp-route-pageId="@Model.PageId" asp-route-returnUrl="@Model.ReturnUrl" asp-route-zone="@Model.Zone">@plugin.DisplayName</a></li>
+    }
+</ul>

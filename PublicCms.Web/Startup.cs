@@ -56,6 +56,7 @@ namespace PublicCms.Web
             {
                 options.Conventions.AuthorizeFolder("/Cms", "AdminPolicy");
             });
+            loadPlugins(mvcBuilder);
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/login";

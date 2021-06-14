@@ -1,0 +1,37 @@
+﻿@using PublicCms.Web.Extensions
+@if (PartModel is Models.PageParts.LinkPart)
+{
+    var link = (Models.PageParts.LinkPart)PartModel;
+    <p><a href="@link.Url">@link.DisplayText</a></p>
+}
+        @if (PartModel is Models.PageParts.ImagePart)
+        {
+            var img = (Models.PageParts.ImagePart)PartModel;
+<div>
+    <img src="@img.Src" alt="@img.AltText" width="@img.Width" />
+</div>
+
+        }
+        @if (PartModel is Models.PageParts.WYSIWYGPart)
+        {
+            var txt = (Models.PageParts.WYSIWYGPart)PartModel;
+            var displayText = (MarkupString)txt.TextContent;
+<div class="htmlblock">
+    @displayText
+</div>
+        }
+
+        @if (PartModel is Models.PageParts.TextPart)
+        {
+            var txt = (Models.PageParts.TextPart)PartModel;
+            var displayText = (MarkupString)txt.TextContent.Displayify();
+<div class="textblock">
+    <p>@displayText</p>
+</div>
+        }
+
+@code {
+    [Parameter]
+    public Models.PageParts.BasePart PartModel { get; set; }
+
+}

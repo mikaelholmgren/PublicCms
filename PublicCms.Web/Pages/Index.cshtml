@@ -1,5 +1,7 @@
 ﻿@page "{slug?}"
 @using Extensions
+@using PublicCms.Web.Models
+@using PublicCms.Web.Models.PageParts
 @model IndexModel
 @{
     ViewData["Title"] = Model.CurrentPage.Name;
@@ -11,5 +13,29 @@
 
 <div class="text-center">
     <h1 class="display-4">@ViewData["Title"]</h1>
-    <component type=Model.CurrentPage.DisplayComponent render-mode="Static" param-CurrentPageModel="Model.CurrentPage" />
+    @if (Model.CurrentPage is SimplePage)
+    {
+        SimplePage pg = (SimplePage)Model.CurrentPage;
+        @foreach (var part in pg.Parts.OrderBy(o => o.DisplayOrder))
+        {
+            if (part is Models.PageParts.PluginPart)
+            {
+                var plugin = (Models.PageParts.PluginPart)part;
+                var pluginType = LoadedPlugins.PluginTypes.Where(n => n.DisplayName == plugin.PluginName).FirstOrDefault();
+                if (pluginType != null)
+                {
+
+                    <div class="pluginpart">
+                        <component type=pluginType.ComponentType render-mode="Static" />
+                    </div>
+                }
+            }
+            else
+            {
+
+                <component type="typeof(Components.Part)" render-mode="Static" param-PartModel="part" />
+            }
+        }
+    }
+
 </div>
