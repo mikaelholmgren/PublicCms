@@ -14,6 +14,9 @@ using PublicCms.Data;
 using Microsoft.AspNetCore.Identity;
 using FluentAssertions.Common;
 using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Reflection;
+using PluginBase;
 
 namespace PublicCms.Web
 {
@@ -49,7 +52,7 @@ namespace PublicCms.Web
                 );
             services.AddSession();
             services.AddControllers();
-            services.AddRazorPages(options =>
+            var mvcBuilder = services.AddRazorPages(options =>
             {
                 options.Conventions.AuthorizeFolder("/Cms", "AdminPolicy");
             });
@@ -63,6 +66,32 @@ namespace PublicCms.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+        }
+        private void loadPlugins(IMvcBuilder builder)
+        {
+            var pluginPath = $"{Environment.CurrentDirectory}/plugins";
+            if (Directory.Exists(pluginPath))
+            {
+                var files = Directory.GetFiles(pluginPath);
+                foreach (var file in files)
+                {
+                    if (!file.EndsWith(".dll", StringComparison.CurrentCultureIgnoreCase))
+                        continue;
+                    PluginLoadContext loadContext = new PluginLoadContext(file);
+                    var asm = loadContext.LoadFromAssemblyName(new AssemblyName(Path.GetFileNameWithoutExtension(file)));
+                    foreach (var type in asm.GetTypes())
+                    {
+                        if (typeof(IPlugin).IsAssignableFrom(type))
+                        {
+                            IPlugin p = Activator.CreateInstance(type) as IPlugin;
+                            if (p != null) LoadedPlugins.PluginTypes.Add(p);
+                        }
+                    }
+
+                    // Let Razor know about the assembly
+                    builder.AddApplicationPart(asm);
+                }
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

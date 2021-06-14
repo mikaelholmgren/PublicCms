@@ -22,4 +22,14 @@
     <Folder Include="wwwroot\Uploads\Images\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PluginBase\PluginBase.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Plugins\WeatherPlugin.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
