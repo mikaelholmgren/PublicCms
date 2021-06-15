@@ -11,12 +11,12 @@ namespace PublicCms.Web.Models
     {
         public SimplePage()
         {
-            DisplayComponent = typeof(Components.SimplePage);
+
         }
         public List<BasePart> Parts { get; set; } = new();
         public string Heading { get; set; }
         public string TextContent { get; set; }
-        public List<LinkPart> Links { get; set; } = new();
+        public List<LinkPart> Links { get; set; } = new(); // Deprecated
         public ImagePart Image { get; set; }
 
     }

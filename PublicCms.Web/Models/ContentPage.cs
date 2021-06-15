@@ -18,9 +18,6 @@ namespace PublicCms.Web.Models
         public string Slug { get; set; }
         [JsonIgnore]
         public bool IsStartPage { get; set; }
-        [BsonIgnore]
-        [JsonIgnore]
-        public Type DisplayComponent { get; set; }
         public List<BasePart> Footer { get; set; } = new();
         public List<BasePart> SideBar { get; set; } = new();
 
