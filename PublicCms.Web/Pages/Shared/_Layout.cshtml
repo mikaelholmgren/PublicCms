@@ -7,7 +7,7 @@
 
 }
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sv">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -36,34 +36,35 @@
         <partial name="_CookieConsent" />
         <main role="main" class="pb-3">
             <div class="row">
-                <div class="col-md-8">
+                <div class="@mainClass">
                     @RenderBody()
                 </div>
                 @if (Model.ShowSideBar && Model.HaveComponents)
                 {
                     var parts = (List<BasePart>)Model.CurrentPage.SideBar;
-            <div class="col-md-4">
-                @foreach (var part in parts.OrderBy(o => o.DisplayOrder))
-                {
-                    if (part is Models.PageParts.PluginPart)
+            <div class="col-md-4" role="region" aria-label="sidofält">
+                
+                    @foreach (var part in parts.OrderBy(o => o.DisplayOrder))
                     {
-                        var plugin = (Models.PageParts.PluginPart)part;
-                        var pluginType = LoadedPlugins.PluginTypes.Where(n => n.DisplayName == plugin.PluginName).FirstOrDefault();
-                        if (pluginType != null)
+                        if (part is Models.PageParts.PluginPart)
+                        {
+                            var plugin = (Models.PageParts.PluginPart)part;
+                            var pluginType = LoadedPlugins.PluginTypes.Where(n => n.DisplayName == plugin.PluginName).FirstOrDefault();
+                            if (pluginType != null)
+                            {
+
+                                <div class="pluginpart">
+                                    <component type=pluginType.ComponentType render-mode="Static" />
+                                </div>
+                            }
+                        }
+                        else
                         {
 
-                            <div class="pluginpart">
-                                <component type=pluginType.ComponentType render-mode="Static" />
-                            </div>
+                            <component type="typeof(Components.Part)" render-mode="Static" param-PartModel="part" />
                         }
                     }
-                    else
-                    {
-
-                        <component type="typeof(Components.Part)" render-mode="Static" param-PartModel="part" />
-                    }
-                }
-
+                
             </div>
                 }
             </div>
