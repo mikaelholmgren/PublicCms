@@ -29,7 +29,10 @@ namespace PublicCms.Web.Services
             if (mySettings != null) return;
             mySettings = new()
             {
-                SiteName = siteName
+                SiteName = siteName,
+                TopNavigation = new(),
+                SideBar = new(),
+                Footer = new()
             };
             await _siteSettingsCollection.InsertOneAsync(mySettings);
         }
@@ -37,7 +40,10 @@ namespace PublicCms.Web.Services
         {
             SiteSettings mySettings = await _siteSettingsCollection.Find(new BsonDocument()).FirstOrDefaultAsync();
             if (mySettings == null) return null;
+            // Make sure none of the list parts have a null value
             if (mySettings.TopNavigation == null) mySettings.TopNavigation = new();
+            if (mySettings.SideBar == null) mySettings.SideBar = new();
+            if (mySettings.Footer == null) mySettings.Footer = new();
             return mySettings;
         }
         public async Task SaveSiteSettingsAsync(SiteSettings s)
