@@ -16,10 +16,12 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.ImagePart
     public class CreateModel : PageModel
     {
         private readonly IContentService _cs;
+        private readonly ISettingsService _ss;
 
-        public CreateModel(IContentService cs)
+        public CreateModel(IContentService cs, ISettingsService ss)
         {
             this._cs = cs;
+            this._ss = ss;
         }
 //        [Required]
         [BindProperty]
@@ -27,7 +29,7 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.ImagePart
         [BindProperty]
         public Models.InputModels.ImageInput Input { get; set; } = new();
         [BindProperty(SupportsGet = true)]
-        public Guid PageId { get; set; }
+        public Guid? PageId { get; set; }
         [BindProperty(SupportsGet = true)]
         public string ReturnUrl { get; set; }
         [BindProperty(SupportsGet = true)]
@@ -48,16 +50,43 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.ImagePart
                 await UploadedFile.CopyToAsync(fileStream);
             }
             var filePath = "Uploads/Images/" + UploadedFile.FileName;
-
-            var page = await _cs.GetPageByIdAsync<ContentPage>(PageId);
-            if (page is SimplePage)
+            if (PageId != null)
             {
-                SimplePage sp = (SimplePage)page;
+                var page = await _cs.GetPageByIdAsync<ContentPage>(PageId.Value);
+                if (page is SimplePage)
+                {
+                    SimplePage sp = (SimplePage)page;
+                    switch (Zone)
+                    {
+                        case ZoneTypes.Main:
+                            parts = sp.Parts;
+                            break;
+                        case ZoneTypes.SideBar:
+                            parts = sp.SideBar;
+                            break;
+                        case ZoneTypes.Footer:
+                            parts = sp.Footer;
+                            break;
+                        default:
+                            break;
+                    }
+                    Models.PageParts.ImagePart part = new()
+                    {
+                        Src = filePath,
+                        AltText = Input.AltText,
+                        Width = Input.Width
+                    };
+                    var maxIndex = parts.Max(m => m.DisplayOrder);
+                    part.DisplayOrder = maxIndex + 1;
+                    parts.Add(part);
+                    await _cs.SavePageAsync(sp);
+                }
+            }
+            else // we're adding to the global layout
+            {
+                SiteSettings sp = await _ss.GetSiteSettingsAsync();
                 switch (Zone)
                 {
-                    case ZoneTypes.Main:
-                        parts = sp.Parts;
-                        break;
                     case ZoneTypes.SideBar:
                         parts = sp.SideBar;
                         break;
@@ -76,7 +105,8 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.ImagePart
                 var maxIndex = parts.Max(m => m.DisplayOrder);
                 part.DisplayOrder = maxIndex + 1;
                 parts.Add(part);
-                await _cs.SavePageAsync(sp);
+                await _ss.SaveSiteSettingsAsync(sp);
+
             }
             return RedirectToPage(ReturnUrl, new { pageId = PageId });
         }

@@ -1,0 +1,130 @@
+﻿@page
+@using PublicCms.Web.Extensions
+@model PublicCms.Web.Pages.Cms.GlobalLayoutModel
+@{
+    ViewData["Title"] = "Hantera global sidlayout";
+}
+<h1>@ViewData["Title"]</h1>
+<p>Här hanterar du hur sidofältet och sidfoten ska se ut på alla sidor, förutom de sidor som själva lägger till innehåll på dessa platser.</p>
+@if (Model.SideBar.Count() > 0)
+{
+    <p>Delar i sidebar</p>
+    @foreach (var part in Model.SideBar.OrderBy(p => p.DisplayOrder))
+    {
+        var partType = part.GetType().Name;
+        var editPage = $"/cms/editor/parts/{partType}/edit";
+        <div>
+            @if (part is Models.PageParts.TextPart)
+            {
+                var txt = (Models.PageParts.TextPart)part;
+                <p>@Html.Raw(txt.TextContent.Displayify())</p>
+            }
+            @if (part is Models.PageParts.WYSIWYGPart)
+            {
+                var txt = (Models.PageParts.WYSIWYGPart)part;
+                <div>@Html.Raw(txt.TextContent)</div>
+            }
+
+            @if (part is Models.PageParts.LinkPart)
+            {
+                var lnk = (Models.PageParts.LinkPart)part;
+                <p>@lnk.DisplayText</p>
+            }
+
+            <span>
+                <a asp-page="@editPage" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-EditIndex="@part.DisplayOrder" asp-route-zone="SideBar">Redigera @part.DisplayName</a>
+            </span>
+            @if (part is Models.PageParts.ImagePart)
+            {
+                var img = (Models.PageParts.ImagePart)part;
+                <p>
+                    <span><img src="/@img.Src" alt="@img.AltText" width="@img.Width" /></span>
+                    <span><a asp-page-handler="RemoveImage" asp-route-orderNumber="@part.DisplayOrder" asp-route-zone="SideBar">Ta bort bild</a></span>
+
+                </p>
+            }
+            else
+            {
+                <span>
+                    <a asp-route-orderNumber="@part.DisplayOrder" asp-page-handler="RemovePart" asp-route-zone="SideBar">Ta bort @part.DisplayName</a>
+                </span>
+            }
+        </div>
+    }
+} @*SideBar Parts*@
+@if (Model.Footer.Count() > 0)
+{
+    <p>Delar i footern</p>
+    @foreach (var part in Model.Footer.OrderBy(p => p.DisplayOrder))
+    {
+        var partType = part.GetType().Name;
+        var editPage = $"/cms/editor/parts/{partType}/edit";
+        <div>
+            @if (part is Models.PageParts.TextPart)
+            {
+                var txt = (Models.PageParts.TextPart)part;
+                <p>@Html.Raw(txt.TextContent.Displayify())</p>
+            }
+            @if (part is Models.PageParts.WYSIWYGPart)
+            {
+                var txt = (Models.PageParts.WYSIWYGPart)part;
+                <div>@Html.Raw(txt.TextContent)</div>
+            }
+
+            @if (part is Models.PageParts.LinkPart)
+            {
+                var lnk = (Models.PageParts.LinkPart)part;
+                <p>@lnk.DisplayText</p>
+            }
+
+            <span>
+                <a asp-page="@editPage" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-EditIndex="@part.DisplayOrder" asp-route-zone="Footer">Redigera @part.DisplayName</a>
+            </span>
+            @if (part is Models.PageParts.ImagePart)
+            {
+                var img = (Models.PageParts.ImagePart)part;
+                <p>
+                    <span><img src="/@img.Src" alt="@img.AltText" width="@img.Width" /></span>
+                    <span><a asp-page-handler="RemoveImage" asp-route-orderNumber="@part.DisplayOrder" asp-route-zone="Footer">Ta bort bild</a></span>
+
+                </p>
+            }
+            else
+            {
+                <span>
+                    <a asp-route-orderNumber="@part.DisplayOrder" asp-page-handler="RemovePart" asp-route-zone="Footer">Ta bort @part.DisplayName</a>
+                </span>
+            }
+        </div>
+    }
+} @*Footer Parts*@
+<div class="row">
+    <div>
+        <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#newsidebar" aria-controls="newsidebar" aria-expanded="false">
+            Lägg till del till sidebar
+        </button>
+    </div>
+</div>
+<div class="collapse" id="newsidebar">
+    <p><a asp-page="/cms/editor/parts/wysiwygpart/create" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-zone="SideBar">Lägg till innehåll med visuell editor</a></p>
+    <p><a asp-page="/cms/editor/parts/textpart/create" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-zone="SideBar">Lägg till textblock</a></p>
+    <p><a asp-page="/cms/editor/parts/linkpart/create" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-zone="SideBar">Lägg till länk</a></p>
+    <p><a asp-page="/cms/editor/parts/imagepart/create" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-zone="SideBar">Lägg till bild</a></p>
+    <p><a asp-page="/cms/editor/parts/pluginpart/create" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-zone="SideBar">Lägg till insticksmodul</a></p>
+</div>
+
+
+<div class="row">
+    <div>
+        <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#newfooter" aria-controls="newfooter" aria-expanded="false">
+            Lägg till del i footern
+        </button>
+    </div>
+</div>
+<div class="collapse" id="newfooter">
+    <p><a asp-page="/cms/editor/parts/wysiwygpart/create" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-zone="Footer">Lägg till innehåll med visuell editor</a></p>
+    <p><a asp-page="/cms/editor/parts/textpart/create" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-zone="Footer">Lägg till textblock</a></p>
+    <p><a asp-page="/cms/editor/parts/linkpart/create" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-zone="Footer">Lägg till länk</a></p>
+    <p><a asp-page="/cms/editor/parts/imagepart/create" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-zone="Footer">Lägg till bild</a></p>
+    <p><a asp-page="/cms/editor/parts/pluginpart/create" asp-route-returnUrl="@HttpContext.Request.Path" asp-route-zone="Footer">Lägg till insticksmodul</a></p>
+</div>

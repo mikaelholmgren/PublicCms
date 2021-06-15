@@ -14,15 +14,17 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.LinkPart
     public class EditModel : PageModel
     {
         private readonly IContentService _cs;
+        private readonly ISettingsService _ss;
 
-        public EditModel(IContentService cs)
+        public EditModel(IContentService cs, ISettingsService ss)
         {
             this._cs = cs;
+            this._ss = ss;
         }
         [BindProperty]
         public LinkInput Input { get; set; } = new();
         [BindProperty(SupportsGet = true)]
-        public Guid PageId { get; set; }
+        public Guid? PageId { get; set; }
         [BindProperty(SupportsGet = true)]
         public string ReturnUrl { get; set; }
         [BindProperty(SupportsGet = true)]
@@ -33,15 +35,38 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.LinkPart
         public async Task OnGetAsync()
         {
             List<BasePart> parts = new();
-            var page = await _cs.GetPageByIdAsync<ContentPage>(PageId);
-            if (page is SimplePage)
+            if (PageId != null)
             {
-                SimplePage sp = (SimplePage)page;
+                var page = await _cs.GetPageByIdAsync<ContentPage>(PageId.Value);
+                if (page is SimplePage)
+                {
+                    SimplePage sp = (SimplePage)page;
+                    switch (Zone)
+                    {
+                        case ZoneTypes.Main:
+                            parts = sp.Parts;
+                            break;
+                        case ZoneTypes.SideBar:
+                            parts = sp.SideBar;
+                            break;
+                        case ZoneTypes.Footer:
+                            parts = sp.Footer;
+                            break;
+                        default:
+                            break;
+                    }
+                    Models.PageParts.LinkPart lnk = (Models.PageParts.LinkPart)parts.FirstOrDefault(l => l.DisplayOrder == EditIndex);
+                    Input.Url = lnk.Url;
+                    Input.Text = lnk.DisplayText;
+                    Input.NewWindow = lnk.OpenInNewWindow;
+
+                }
+            }
+            else
+            {
+                SiteSettings sp = await _ss.GetSiteSettingsAsync();
                 switch (Zone)
                 {
-                    case ZoneTypes.Main:
-                        parts = sp.Parts;
-                        break;
                     case ZoneTypes.SideBar:
                         parts = sp.SideBar;
                         break;
@@ -51,26 +76,49 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.LinkPart
                     default:
                         break;
                 }
-                Models.PageParts.LinkPart lnk =(Models.PageParts.LinkPart) parts.FirstOrDefault(l => l.DisplayOrder == EditIndex);
+                Models.PageParts.LinkPart lnk = (Models.PageParts.LinkPart)parts.FirstOrDefault(l => l.DisplayOrder == EditIndex);
                 Input.Url = lnk.Url;
                 Input.Text = lnk.DisplayText;
                 Input.NewWindow = lnk.OpenInNewWindow;
-                
-            }
 
+            }
         }
         public async Task<IActionResult> OnPostAsync()
         {
             List<BasePart> parts = new();
-            var page = await _cs.GetPageByIdAsync<ContentPage>(PageId);
-            if (page is SimplePage)
+            if (PageId != null)
             {
-                SimplePage sp = (SimplePage)page;
+                var page = await _cs.GetPageByIdAsync<ContentPage>(PageId.Value);
+                if (page is SimplePage)
+                {
+                    SimplePage sp = (SimplePage)page;
+                    switch (Zone)
+                    {
+                        case ZoneTypes.Main:
+                            parts = sp.Parts;
+                            break;
+                        case ZoneTypes.SideBar:
+                            parts = sp.SideBar;
+                            break;
+                        case ZoneTypes.Footer:
+                            parts = sp.Footer;
+                            break;
+                        default:
+                            break;
+                    }
+                    Models.PageParts.LinkPart lnk = (Models.PageParts.LinkPart)parts.FirstOrDefault(l => l.DisplayOrder == EditIndex);
+                    lnk.Url = Input.Url;
+                    lnk.DisplayText = Input.Text;
+                    lnk.OpenInNewWindow = Input.NewWindow;
+
+                    await _cs.SavePageAsync(sp);
+                }
+            }
+            else
+            {
+                SiteSettings sp = await _ss.GetSiteSettingsAsync();
                 switch (Zone)
                 {
-                    case ZoneTypes.Main:
-                        parts = sp.Parts;
-                        break;
                     case ZoneTypes.SideBar:
                         parts = sp.SideBar;
                         break;
@@ -80,12 +128,13 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.LinkPart
                     default:
                         break;
                 }
-                Models.PageParts.LinkPart lnk =(Models.PageParts.LinkPart) parts.FirstOrDefault(l => l.DisplayOrder == EditIndex);
+                Models.PageParts.LinkPart lnk = (Models.PageParts.LinkPart)parts.FirstOrDefault(l => l.DisplayOrder == EditIndex);
                 lnk.Url = Input.Url;
                 lnk.DisplayText = Input.Text;
                 lnk.OpenInNewWindow = Input.NewWindow;
 
-                await _cs.SavePageAsync(sp);
+                await _ss.SaveSiteSettingsAsync(sp);
+
             }
             return RedirectToPage(ReturnUrl, new { pageId = PageId });
         }

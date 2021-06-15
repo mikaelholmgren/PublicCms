@@ -47,7 +47,7 @@ namespace PublicCms.Web.Pages
             CurrentPage = await _cs.GetPageBySlugAsync(Slug);
             if (CurrentPage == null) return NotFound();
             CurrentSiteSettings = await _ss.GetSiteSettingsAsync();
-            ShowSideBar = CurrentPage.SideBar.Count > 0;
+            ShowSideBar = CurrentPage.SideBar.Count > 0 || CurrentSiteSettings.SideBar.Count >0;
             if (!_sim.IsSignedIn(User)) await _vcg.AddVisitToPageAsync(CurrentPage.Id);
             return Page();
         }

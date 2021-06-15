@@ -13,15 +13,17 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.TextPart
     public class EditModel : PageModel
     {
         private readonly IContentService _cs;
+        private readonly ISettingsService _ss;
 
-        public EditModel(IContentService cs)
+        public EditModel(IContentService cs, ISettingsService ss)
         {
             this._cs = cs;
+            this._ss = ss;
         }
         [BindProperty]
         public string TextContent { get; set; }
         [BindProperty(SupportsGet = true)]
-        public Guid PageId { get; set; }
+        public Guid? PageId { get; set; }
         [BindProperty(SupportsGet = true)]
         public string ReturnUrl { get; set; }
         [BindProperty(SupportsGet = true)]
@@ -32,16 +34,35 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.TextPart
         public async Task OnGetAsync()
         {
             List<BasePart> parts = new();
-
-            var page = await _cs.GetPageByIdAsync<ContentPage>(PageId);
-            if (page is SimplePage)
+            if (PageId != null)
             {
-                SimplePage sp = (SimplePage)page;
+                var page = await _cs.GetPageByIdAsync<ContentPage>(PageId.Value);
+                if (page is SimplePage)
+                {
+                    SimplePage sp = (SimplePage)page;
+                    switch (Zone)
+                    {
+                        case ZoneTypes.Main:
+                            parts = sp.Parts;
+                            break;
+                        case ZoneTypes.SideBar:
+                            parts = sp.SideBar;
+                            break;
+                        case ZoneTypes.Footer:
+                            parts = sp.Footer;
+                            break;
+                        default:
+                            break;
+                    }
+                    var txt = (Models.PageParts.TextPart)parts.FirstOrDefault(l => l.DisplayOrder == EditIndex);
+                    TextContent = txt.TextContent;
+                }
+            }
+            else
+            {
+                SiteSettings sp = await _ss.GetSiteSettingsAsync();
                 switch (Zone)
                 {
-                    case ZoneTypes.Main:
-                        parts = sp.Parts;
-                        break;
                     case ZoneTypes.SideBar:
                         parts = sp.SideBar;
                         break;
@@ -53,23 +74,44 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.TextPart
                 }
                 var txt = (Models.PageParts.TextPart)parts.FirstOrDefault(l => l.DisplayOrder == EditIndex);
                 TextContent = txt.TextContent;
-            }
 
+            }
         }
         public async Task<IActionResult> OnPostAsync()
         {
             List<BasePart> parts = new();
-
-            var page = await _cs.GetPageByIdAsync<ContentPage>(PageId);
-            if (page is SimplePage)
+            if (PageId != null)
+            {
+                var page = await _cs.GetPageByIdAsync<ContentPage>(PageId.Value);
+                if (page is SimplePage)
+                {
+                    int displayOrder = 0;
+                    SimplePage sp = (SimplePage)page;
+                    switch (Zone)
+                    {
+                        case ZoneTypes.Main:
+                            parts = sp.Parts;
+                            break;
+                        case ZoneTypes.SideBar:
+                            parts = sp.SideBar;
+                            break;
+                        case ZoneTypes.Footer:
+                            parts = sp.Footer;
+                            break;
+                        default:
+                            break;
+                    }
+                    var txt = (Models.PageParts.TextPart)parts.FirstOrDefault(t => t.DisplayOrder == EditIndex);
+                    txt.TextContent = TextContent;
+                    await _cs.SavePageAsync(sp);
+                }
+            }
+            else
             {
                 int displayOrder = 0;
-                SimplePage sp = (SimplePage)page;
+                SiteSettings sp = await _ss.GetSiteSettingsAsync();
                 switch (Zone)
                 {
-                    case ZoneTypes.Main:
-                        parts = sp.Parts;
-                        break;
                     case ZoneTypes.SideBar:
                         parts = sp.SideBar;
                         break;
@@ -79,9 +121,10 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.TextPart
                     default:
                         break;
                 }
-                var txt =(Models.PageParts.TextPart) parts.FirstOrDefault(t => t.DisplayOrder == EditIndex);
+                var txt = (Models.PageParts.TextPart)parts.FirstOrDefault(t => t.DisplayOrder == EditIndex);
                 txt.TextContent = TextContent;
-                await _cs.SavePageAsync(sp);
+                await _ss.SaveSiteSettingsAsync(sp);
+
             }
             return RedirectToPage(ReturnUrl, new { pageId = PageId });
         }
