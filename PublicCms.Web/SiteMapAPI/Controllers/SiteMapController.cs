@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PublicCms.Web.Models;
 using PublicCms.Web.Services;
+using PublicCms.Web.SiteMapAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +21,19 @@ namespace PublicCms.Web.SiteMapAPI.Controllers
             this._cs = cs;
         }
         [HttpGet]
-        public async Task<IEnumerable<ContentPage>> GetAllPagesAsync()
+        public async Task<IEnumerable<SiteMapModel>> GetAllPagesAsync()
         {
             var allPages = await _cs.GetAllPagesAsync();
-            return allPages;
+            List<SiteMapModel> list = new();
+            foreach (var pg in allPages)
+            {
+                list.Add(new SiteMapModel()
+                {
+                    PageName = pg.Name,
+                    PageUrl = $"/{pg.Slug}"
+                });
+            }
+            return list;
         }
     }
 }
