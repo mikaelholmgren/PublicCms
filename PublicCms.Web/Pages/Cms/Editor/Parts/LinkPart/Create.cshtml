@@ -3,7 +3,8 @@
 @{
     ViewData["Title"] = $"Skapa länk i {Model.Zone}";
 }
-<h1>@ViewData["Title"]</h1>
+    <h1>@ViewData["Title"]</h1>
+<p>Om du ska ange en intern länk till den här webbplatsen, starta länkadressen med en /<br />Om det är en extern länk, starta länkadressen med https://</p>
 <div class="row">
     <form method="post">
         <input type="hidden" asp-for="PageId" />
