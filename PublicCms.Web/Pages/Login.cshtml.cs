@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using PublicCms.Web.Services;
 
 namespace PublicCms.Pages
 {
@@ -15,11 +16,13 @@ namespace PublicCms.Pages
     {
         private readonly SignInManager<AppUser> _sim;
         private readonly UserManager<AppUser> _um;
+        private readonly ISiteStatusService _sss;
 
-        public LoginModel(SignInManager<AppUser> sim, UserManager<AppUser> um)
+        public LoginModel(SignInManager<AppUser> sim, UserManager<AppUser> um, ISiteStatusService sss)
         {
             this._sim = sim;
             this._um = um;
+            this._sss = sss;
         }
 
         [BindProperty]
@@ -46,8 +49,11 @@ namespace PublicCms.Pages
 
         public bool ShowSideBar { get; set; }
         public bool HaveComponents { get; set; }
+        public bool DocDbOk { get; private set; }
+
         public async Task OnGetAsync(string returnUrl = null)
         {
+            DocDbOk = _sss.GetDocDbStatus();
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);

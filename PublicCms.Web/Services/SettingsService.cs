@@ -14,18 +14,23 @@ namespace PublicCms.Web.Services
     {
         private readonly IConfiguration _config;
         private readonly MongoService _ms;
+        private readonly ISiteStatusService _sss;
         private readonly IMongoCollection<SiteSettings> _siteSettingsCollection;
         private string _themesPath = "./wwwroot/css/themes";
 
-        public SettingsService(IConfiguration config, MongoService ms)
+        public SettingsService(IConfiguration config, MongoService ms, ISiteStatusService sss)
         {
             _config = config;
             _ms = ms;
+            this._sss = sss;
             _siteSettingsCollection = _ms.GetCollection<SiteSettings>(_config["MongoDB:SettingsCollectionName"]);
         }
         public async Task CreateSiteSettingsAsync(string siteName)
         {
-            var mySettings = await GetSiteSettingsAsync();
+            SiteSettings mySettings = null;
+            
+            mySettings = await GetSiteSettingsAsync();
+
             if (mySettings != null) return;
             mySettings = new()
             {

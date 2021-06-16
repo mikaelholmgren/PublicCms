@@ -30,7 +30,18 @@ namespace PublicCms.Web
                     await adminService.CreateAdmin("Admin123!");
                 }
                 var settings = scope.ServiceProvider.GetRequiredService<ISettingsService>();
-                await settings.CreateSiteSettingsAsync("Vår sajt");
+                var _sss = scope.ServiceProvider.GetRequiredService<ISiteStatusService>();
+
+                try
+                {
+                    await settings.CreateSiteSettingsAsync("Vår sajt");
+                    _sss.SetDocDbStatus(true);
+                }
+                catch (Exception)
+                {
+                    _sss.SetDocDbStatus(false);
+                }
+                
                 if (!System.IO.Directory.Exists("./wwwroot/Uploads/Images")) Directory.CreateDirectory("./wwwroot/Uploads/Images");
             }
             builder.Run();

@@ -4,13 +4,14 @@
 @using PublicCms.Web.Models.PageParts
 @model IndexModel
 @{
-    ViewData["Title"] = Model.CurrentPage.Name;
-    ViewData["SiteName"] = Model.CurrentSiteSettings.SiteName;
-    ViewData["ThemeCss"] = Model.CurrentSiteSettings.ThemeCssFile;
+    ViewData["Title"] = Model.CurrentPage.Name ?? "";
+    ViewData["SiteName"] = Model.CurrentSiteSettings.SiteName ?? "";
+    ViewData["ThemeCss"] = Model.CurrentSiteSettings.ThemeCssFile ?? "";
     ViewData["ConsentText"] = !string.IsNullOrEmpty(Model.CurrentSiteSettings.ConsentText) ? Model.CurrentSiteSettings.ConsentText.Displayify() : null;
-    ViewData["PrivacyPageUrl"] = Model.CurrentSiteSettings.PrivacyPageUrl;
+    ViewData["PrivacyPageUrl"] = Model.CurrentSiteSettings.PrivacyPageUrl ?? "";
 }
-
+@if (Model.DocDbOk)
+{
 <div class="text-center">
     <h1 class="display-4">@ViewData["Title"]</h1>
     @if (Model.CurrentPage is SimplePage)
@@ -39,3 +40,7 @@
     }
 
 </div>
+}
+else { 
+    <p class="text-danger">Dokumentdatabasen verkar inte fungera. Om du är sajtens ägare bör du kolla upp databasen och anslutningarna.</p>
+}

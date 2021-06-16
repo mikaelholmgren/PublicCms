@@ -19,13 +19,18 @@ namespace PublicCms.Web.Pages
         private readonly ISettingsService _ss;
         private readonly IVisitorCounterGateway _vcg;
         private readonly SignInManager<AppUser> _sim;
+        private readonly ISiteStatusService _sss;
 
-        public IndexModel(IContentService cs, ISettingsService ss, IVisitorCounterGateway vcg, SignInManager<AppUser> sim)
+        public bool DocDbOk { get; }
+
+        public IndexModel(IContentService cs, ISettingsService ss, IVisitorCounterGateway vcg, SignInManager<AppUser> sim, ISiteStatusService sss)
         {
             this._cs = cs;
             _ss = ss;
             this._vcg = vcg;
             this._sim = sim;
+            this._sss = sss;
+            DocDbOk = _sss.GetDocDbStatus();
         }
         [BindProperty(SupportsGet = true)]
         public string Slug { get; set; }
@@ -35,6 +40,13 @@ namespace PublicCms.Web.Pages
         public bool HaveComponents { get; set; } = true;
         public async Task<IActionResult> OnGetAsync()
         {
+            if (!DocDbOk)
+            {
+                CurrentPage = new();
+                CurrentSiteSettings = new();
+
+                return Page();
+            }
             if (Slug == null)
             {
                 var startPage = await _cs.GetStartPageAsync();
@@ -44,10 +56,10 @@ namespace PublicCms.Web.Pages
                     CurrentPage = startPage;
             }
             else
-            CurrentPage = await _cs.GetPageBySlugAsync(Slug);
+                CurrentPage = await _cs.GetPageBySlugAsync(Slug);
             if (CurrentPage == null) return NotFound();
             CurrentSiteSettings = await _ss.GetSiteSettingsAsync();
-            ShowSideBar = CurrentPage.SideBar.Count > 0 || CurrentSiteSettings.SideBar.Count >0;
+            ShowSideBar = CurrentPage.SideBar.Count > 0 || CurrentSiteSettings.SideBar.Count > 0;
             if (!_sim.IsSignedIn(User)) await _vcg.AddVisitToPageAsync(CurrentPage.Id);
             return Page();
         }

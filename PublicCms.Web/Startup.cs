@@ -36,6 +36,7 @@ namespace PublicCms.Web
             services.AddScoped<IContentService, ContentService>();
             services.AddScoped<ISettingsService, SettingsService>();
             services.AddSingleton<MongoService>();
+            services.AddSingleton<ISiteStatusService, SiteStatusService>();
             services.AddHttpClient<Gateways.VisitorCounterGateway>();
             services.AddSingleton<Gateways.IVisitorCounterGateway, Gateways.VisitorCounterGateway>();
             services.AddDbContext<IdentityContext>(options =>
