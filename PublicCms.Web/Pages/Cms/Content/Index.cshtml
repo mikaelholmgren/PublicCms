@@ -21,13 +21,13 @@
             @foreach (var pg in Model.Pages)
             {
                 var url = pg.Slug != null ? $"/{pg.Slug}" : "";
-                var pgType = "Standardsida";
+                var pgType = pg.GetType().Name;
                 var editUrl = $"../Editor/Pages/{pgType}/Edit";
                 var startPageText = pg.IsStartPage ? "Är startsida" : "Gör till startsida";
                 <tr>
                     <td>@pg.Name</td>
                     <td>@url</td>
-                    <td>@pgType</td>
+                    <td>Standardsida</td>
                     <td>
                         <span>
                             <a asp-page="@editUrl" asp-route-pageId="@pg.Id">Redigera</a>
