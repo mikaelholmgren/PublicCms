@@ -14,5 +14,6 @@ namespace PublicCms.Web.Services
         Task SavePageAsync(ContentPage p);
         Task<IEnumerable<ContentPage>> GetAllPagesAsync();
         Task<T> GetPageByIdAsync<T>(Guid pageId) where T : ContentPage;
+        Task RemovePage(Guid pageId);
     }
 }

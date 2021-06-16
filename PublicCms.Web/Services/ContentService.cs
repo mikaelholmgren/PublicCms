@@ -69,5 +69,10 @@ namespace PublicCms.Web.Services
             await SavePageAsync(newStartPage);
 
         }
+        public async Task RemovePage(Guid pageId)
+        {
+            var pageToRemove = await GetPageByIdAsync<ContentPage>(pageId);
+            await _pageCollection.DeleteOneAsync(p => p.Id == pageId);
+        }
     }
 }

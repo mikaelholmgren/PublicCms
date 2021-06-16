@@ -33,6 +33,9 @@
                             <a asp-page="@editUrl" asp-route-pageId="@pg.Id">Redigera</a>
                         </span>
                         <span>
+                            <a asp-page-handler="RemovePage" asp-route-pageId="@pg.Id" onclick="return confirm('Vill du verkligen ta bort sidan @pg.Name?');">Ta bort sida</a>
+                        </span>
+                        <span>
                             @if (pg.IsStartPage)
                             {
                                 @startPageText
