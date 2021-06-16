@@ -6,7 +6,7 @@
 <h1>@ViewData["Title"]</h1>
 <div class="row">
     <div id="createlinks">
-        <a asp-page="/cms/editor/pages/simplepage/create">Skapa enkel sida</a>
+        <a asp-page="/cms/editor/pages/simplepage/create">Skapa sida</a>
     </div>
     <table class="table">
         <thead>
@@ -21,7 +21,7 @@
             @foreach (var pg in Model.Pages)
             {
                 var url = pg.Slug != null ? $"/{pg.Slug}" : "";
-                var pgType = pg.GetType().Name;
+                var pgType = "Standardsida";
                 var editUrl = $"../Editor/Pages/{pgType}/Edit";
                 var startPageText = pg.IsStartPage ? "Är startsida" : "Gör till startsida";
                 <tr>

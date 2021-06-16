@@ -2,7 +2,7 @@
 @if (PartModel is Models.PageParts.LinkPart)
 {
     var link = (Models.PageParts.LinkPart)PartModel;
-    <p><a href="@link.Url">@link.DisplayText</a></p>
+    <p><a href="@link.Url" target="@(link.OpenInNewWindow ? "_blank" : null)">@link.DisplayText</a></p>
 }
         @if (PartModel is Models.PageParts.ImagePart)
         {
