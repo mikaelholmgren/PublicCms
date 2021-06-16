@@ -36,6 +36,9 @@ footer {
     footer div {
         color: white !important;
     }
+    footer div p {
+        color: black !important;
+    }
 
         footer div a {
             color: indianred;
