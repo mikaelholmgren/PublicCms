@@ -6,7 +6,7 @@
 <h1>@ViewData["Title"]</h1>
 <p>Välj ett tema</p>
 <ul class="list-unstyled">
-    @foreach (var item in Model.Themes)
+    @foreach (var item in Model.Themes.OrderBy(t => t.DisplayText))
     {
         if (item.FileName != Model.SiteSettings.ThemeCssFile)
         {

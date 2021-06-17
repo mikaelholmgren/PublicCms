@@ -25,7 +25,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .textblock {
-    color: blue;
+    color: black;
     background-color: white
 }
 
@@ -36,6 +36,10 @@ footer {
     footer div {
         color: white !important;
     }
+        footer div .textblock {
+            color: white !important;
+            background-color: blue;
+        }
 
         footer div a {
             color: skyblue;

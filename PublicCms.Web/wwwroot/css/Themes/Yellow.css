@@ -36,6 +36,10 @@ footer {
     footer div {
         color: black !important;
     }
+        footer div .textblock {
+            color: black !important;
+            background-color: yellow;
+        }
 
         footer div a {
             color: grey
