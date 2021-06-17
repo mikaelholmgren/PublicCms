@@ -31,14 +31,15 @@
 
 
 </form>
+<hr />
 @if (Model.CurrentPage.Parts.Count() > 0)
 {
-    <p>Siddelar</p>
+    <h2>Siddelar</h2>
     @foreach (var part in Model.CurrentPage.Parts.OrderBy(p => p.DisplayOrder))
     {
         var partType = part.GetType().Name;
         var editPage = $"/cms/editor/parts/{partType}/edit";
-        <div>
+        <div class="mb-4">
             @if (part is Models.PageParts.TextPart)
             {
                 var txt = (Models.PageParts.TextPart)part;
@@ -76,15 +77,17 @@
             }
         </div>
     }
+    <hr />
 } @*PageParts*@
+
 @if (Model.CurrentPage.SideBar.Count() > 0)
 {
-    <p>Delar i sidebar (Dessa ersätter default för sajten på denna sida)</p>
+    <h2>Delar i sidebar (Dessa ersätter default för sajten på denna sida)</h2>
     @foreach (var part in Model.CurrentPage.SideBar.OrderBy(p => p.DisplayOrder))
     {
         var partType = part.GetType().Name;
         var editPage = $"/cms/editor/parts/{partType}/edit";
-        <div>
+        <div class="mb-4">
             @if (part is Models.PageParts.TextPart)
             {
                 var txt = (Models.PageParts.TextPart)part;
@@ -122,15 +125,16 @@
             }
         </div>
     }
+    <hr />
 } @*SideBar Parts*@
 @if (Model.CurrentPage.Footer.Count() > 0)
 {
-    <p>Delar i footern (Dessa ersätter default för sajten på denna sida)</p>
+    <h2>Delar i footern (Dessa ersätter default för sajten på denna sida)</h2>
     @foreach (var part in Model.CurrentPage.Footer.OrderBy(p => p.DisplayOrder))
     {
         var partType = part.GetType().Name;
         var editPage = $"/cms/editor/parts/{partType}/edit";
-        <div>
+        <div class="mb-4">
             @if (part is Models.PageParts.TextPart)
             {
                 var txt = (Models.PageParts.TextPart)part;
@@ -168,6 +172,7 @@
             }
         </div>
     }
+    <hr />
 } @*Footer Parts*@
 <div class="row">
     <div>
