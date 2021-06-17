@@ -76,7 +76,8 @@ namespace PublicCms.Web.Pages.Cms.Editor.Parts.ImagePart
                         AltText = Input.AltText,
                         Width = Input.Width
                     };
-                    var maxIndex = parts.Max(m => m.DisplayOrder);
+                    var maxIndex = 0;
+                    if (parts.Count >0) maxIndex = parts.Max(m => m.DisplayOrder);
                     part.DisplayOrder = maxIndex + 1;
                     parts.Add(part);
                     await _cs.SavePageAsync(sp);
